@@ -1,15 +1,24 @@
 //home.ts
 //
+/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
+//
+import {inject} from 'aurelia-framework';
+//
+//
 import {IDataService, IPerson, IElementDesc} from '../../infodata.d';
 import {BaseViewModel} from './baseviewmodel';
 import {InfoRoot} from '../../inforoot';
+import {UserInfo} from './userinfo';
 //
 export class Home extends BaseViewModel {
     public username: string;
     public password: string;
     public menu: IElementDesc[];
-    constructor() {
-        super();
+    //
+    public static inject(){ return [UserInfo];}
+    //
+    constructor(userinfo:UserInfo) {
+        super(userinfo);
         this.username = null;
         this.password = null;
         this.menu = [];
@@ -17,7 +26,7 @@ export class Home extends BaseViewModel {
     public activate(params?: any, config?: any, instruction?: any): any {
         if (this.isConnected) {
             this.title = 'Accueil';
-            return Promise.resolve(true);
+            return super.activate(params,config,instruction);
         } else {
           this.title = 'Connexion';
           this.menu = [];
@@ -28,6 +37,9 @@ export class Home extends BaseViewModel {
         return (this.username !== null) && (this.username.trim().length > 0) &&
             (this.password !== null) && (this.password.trim().length > 0);
     }// canConnect
+    public get cannotConnect():boolean {
+        return (!this.canConnect);
+    }
     public connect(): any {
         if (!this.canConnect) {
             return;

@@ -2,6 +2,7 @@
 //
 import {UserInfo} from './userinfo';
 import {IDataService, IPerson} from '../../infodata.d';
+import {DataService} from '../services/dataservice';
 import {InfoRoot} from '../../inforoot';
 //
 export class BaseViewModel {
@@ -10,16 +11,20 @@ export class BaseViewModel {
     public title: string;
     public errorMessage: string;
     public infoMessage: string;
+    private _photoUrl:string;
+    private _photoData:Blob;
     //
-    constructor() {
-        this._user = null;
+    constructor(userinfo:UserInfo) {
+        this._user = userinfo;
         this.title = null;
         this.errorMessage = null;
         this.infoMessage = null;
+        this._photoUrl = null;
+        this._photoData = null;
     }// constructor
     public get userInfo(): UserInfo {
         if (this._user === null) {
-            this._user = new UserInfo();
+            this._user = new UserInfo(new DataService());
         }
         return this._user;
     }// get userInfo
@@ -41,8 +46,27 @@ export class BaseViewModel {
     public set isNotConnected(s: boolean) {
     }
     public activate(params?: any, config?: any, instruction?: any): any {
-        this.update_title();
+        let x = this.userInfo.person;
+        let self = this;
+        this._photoData = null;
+        if ((x !== null) && (x.id !== null) && (x.avatarid !== null)){
+            return this.dataService.find_attachment(x.id,x.avatarid).then((blob)=>{
+                if (blob !== null){
+                    self._photoData = blob;
+                } 
+                return true;
+                });
+            } else {
+                this.update_title();
+                return Promise.resolve(true);
+            }
     }// activate
+    public deactivate(): any{
+        if (this._photoUrl !== null){
+            InfoRoot.revokeUrl(this._photoUrl);
+            this._photoUrl = null;
+        }
+    }
     protected update_title(): any {
     } // update_title
     public get hasErrorMessage(): boolean {
@@ -79,8 +103,10 @@ export class BaseViewModel {
         return (x !== null) ? x.fullname : null;
     }
     public get photoUrl(): string {
-        let x = this.person;
-        return (x !== null) ? x.url : null;
+        if ((this._photoUrl === null) && (this._photoData !== null)){
+            this._photoUrl = InfoRoot.createUrl(this._photoData);
+        }
+        return this._photoUrl;
     }
     public get hasPhoto(): boolean {
         let x = this.photoUrl;

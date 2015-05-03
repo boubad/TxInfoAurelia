@@ -39,9 +39,7 @@ export class BaseItem extends ElementDesc implements IBaseItem {
     }
     public toMap(oMap: any): void {
         super.to_map(oMap);
-        if (this.type() !== null){
-            oMap.type = this.type();
-        }
+        oMap.type = this.type();
         if (this.attachments !== null) {
             oMap._attachments = this.attachments;
         }

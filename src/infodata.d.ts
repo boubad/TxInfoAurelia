@@ -200,9 +200,19 @@ export interface IDataService extends IDatabaseManager {
     get_departement_annees: (depid: string) => Promise<IAnnee[]>;
     get_departement_unites: (depid: string) => Promise<IUnite[]>;
     get_departement_groupes: (depid: string) => Promise<IGroupe[]>;
-    get_person_departements: (personid: string)=> Promise<IDepartement[]>;
+    get_person_departements: (personid: string) => Promise<IDepartement[]>;
     find_person_by_username: (username: string) => Promise<IPerson>;
     get_etudaffectations: (semestreid: string, groupeid: string) => Promise<IEtudAffectation[]>;
     get_groupeevent_evts: (grpeventid: string, bNote?: boolean) => Promise<IEtudEvent[]>;
     get_groupeevent_all_notes: (grpeventid: string) => Promise<IEtudEvent[]>;
 }
+export interface IFileDesc {
+    name: string;
+    type: string;
+    data: Blob;
+    url: string;
+    //
+    is_storeable:boolean;
+    clear: () => void;
+    changed : (evt:any) => any;
+}// interface IFileDesc

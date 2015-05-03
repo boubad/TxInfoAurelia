@@ -8,7 +8,7 @@ import 'bootstrap/css/bootstrap.css!';
 export class App {
 	public router:Router; 
 	 configureRouter(config:IRouterConfig, router:Router){
-    config.title = 'Aurelia';
+    config.title = 'InfoApp';
     config.map([
       { route: ['','home'],  moduleId: './data/model/home', nav: true, title:'Accueil' },
       { route: 'profil',  moduleId: './data/model/profil', nav: true, title:'Profil' },

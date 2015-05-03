@@ -3,7 +3,7 @@
 import {IBaseItem, IDepartement, IAnnee, IUnite, IGroupe,ISemestre,IMatiere,
 IPerson, IWorkItem, IProfAffectation, IEtudAffectation,
 IGroupeEvent, IEtudEvent, IItemFactory, IDataService} from '../../infodata.d';
-import {ETUDIANTPERSON_KEY} from '../../infoconstants';
+import {PERSON_KEY, ETUDIANTPERSON_KEY} from '../../infoconstants';
 import {Person} from '../domain/person';
 import {EtudAffectation} from '../domain/etudaffectation';
 import {EtudEvent} from '../domain/etudevent';
@@ -87,6 +87,9 @@ export class DataService extends PouchDatabase implements IDataService {
         return this.db.then((dx) => {
             return dx.get(id);
         }).then((pOld) => {
+            if (pOld.type === undefined){
+                pOld.type = PERSON_KEY;
+            }
             if (pOld.type == ETUDIANTPERSON_KEY) {
                 return new EtudiantPerson(pOld);
             } else {

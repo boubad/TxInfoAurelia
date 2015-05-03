@@ -418,7 +418,7 @@ declare module "aurelia-framework" {
         supportAtScript: () => void;
         createChild: () => Container;
     }
-    
+    class inject {}
     class Transient { }
 
     class Singleton { }

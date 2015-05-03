@@ -291,10 +291,37 @@ export class PouchDatabase implements IDatabaseManager {
         });
     }// maintains_one_item
     public maintains_item(item: IBaseItem): Promise<IBaseItem> {
-        let self = this;
-        return this.db.then((xdb) => {
-            return self.internal_maintains_one_item(xdb, item)
-        });
+        if (!item.is_storeable()){
+            Promise.reject(new Error('Not storeable item.'));
+        }
+        let generator = this._gen;
+        let xdb:PouchDB = null;
+        let oMap:any = {};
+        let id:string = null;
+        return this.db.then((rdb)=>{
+            xdb = rdb;
+            item.to_map(oMap);
+            if ((item.id === undefined) || (item.id === null)) {
+                oMap._id = item.create_id();
+            }
+            id = oMap._id;
+            return xdb.get(id,{attachments:true});
+            }).then((p)=>{
+                 oMap._rev = p._rev;
+                if ((p._attachments !== undefined) && (p._attachments !== null)) {
+                    oMap._attachments = p._attachments;
+                    }
+                return xdb.put(oMap);
+                },(err)=>{
+                    if (err.status != 404) {
+                    throw new Error(err.reason);
+                    }
+                return xdb.put(oMap);
+            }).then((z)=>{
+                return xdb.get(id, { attachments: true });
+            }).then((pk)=>{
+                return generator.create(pk);
+            });
     }// maintains_one_item
     public maintains_items(items: IBaseItem[]): Promise<IBaseItem[]> {
         let self = this;

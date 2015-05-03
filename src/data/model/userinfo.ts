@@ -1,4 +1,7 @@
 //userinfo.ts
+/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
+//
+import {inject} from 'aurelia-framework';
 //
 import {IPerson, IDepartement, IAnnee, ISemestre, IUnite, IMatiere, IGroupe,
 IDataService} from '../../infodata.d';
@@ -29,8 +32,10 @@ export class UserInfo {
     private _matieres: IMatiere[];
     private _groupes: IGroupe[];
     //
-    constructor() {
-
+    static inject(){ return [DataService];}
+    //
+    constructor(service:DataService) {
+        this._service = service;
     }// constructor
     public get dataService(): IDataService {
         if ((this._service === undefined) || (this._service === null)) {
@@ -507,11 +512,11 @@ export class UserInfo {
         if ((this._pers !== undefined) && (this._pers !== null) && (this._pers.id !== null)) {
             return this._pers;
         }
+        this._pers = null;
         let sval = InfoRoot.sessionStore_get(PERSON_KEY);
         if (sval === null) {
             return null;
         }
-        this._pers = null;
         try {
             let oMap: any = JSON.parse(sval);
             if ((oMap !== undefined) && (oMap !== null) && (oMap.type !== undefined) &&
@@ -527,10 +532,6 @@ export class UserInfo {
         return this._pers;
     }// get person
     public set person(pPers: IPerson) {
-        if ((this._pers !== undefined) && (this._pers !== null) && (this._pers.url !== null)) {
-            InfoRoot.revokeUrl(this._pers.url);
-            this._pers.url = null;
-        }
         this._pers = null;
         this._dep = null;
         this._an = null;
@@ -558,18 +559,7 @@ export class UserInfo {
                 pPers.to_map(oMap);
                 let sval = JSON.stringify(oMap);
                 InfoRoot.sessionStore_set(PERSON_KEY, sval);
-                let avatarid = pPers.avatarid;
-                if (avatarid !== null) {
-                    let self = this;
-                    this.dataService.find_attachment(pPers.id, avatarid).then((blob) => {
-                        if (blob !== null){    
-                            pPers.url = InfoRoot.createUrl(blob);
-                        }
-                        self._pers = pPers;
-                     });
-                } else {
-                    this._pers = pPers;
-                }
+                this._pers = pPers;
             } catch (e) { }
         }
     }// set person
