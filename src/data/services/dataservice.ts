@@ -5,7 +5,7 @@ IPerson, IWorkItem, IProfAffectation, IEtudAffectation,
 IGroupeEvent, IEtudEvent, IItemFactory, IDataService} from '../../infodata.d';
 import {ETUDIANTPERSON_KEY} from '../../infoconstants';
 import {Person} from '../domain/person';
-import {EtudAffectation} from '../domain/EtudAffectation';
+import {EtudAffectation} from '../domain/etudaffectation';
 import {EtudEvent} from '../domain/etudevent';
 import {GroupeEvent} from '../domain/groupeevent';
 import {EtudiantPerson} from '../domain/etudperson';
