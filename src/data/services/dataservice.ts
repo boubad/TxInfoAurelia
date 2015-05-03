@@ -3,6 +3,7 @@
 import {IBaseItem, IDepartement, IAnnee, IUnite, IGroupe,ISemestre,IMatiere,
 IPerson, IWorkItem, IProfAffectation, IEtudAffectation,
 IGroupeEvent, IEtudEvent, IItemFactory, IDataService} from '../../infodata.d';
+import {ETUDIANTPERSON_KEY} from '../../infoconstants';
 import {Person} from '../domain/person';
 import {EtudAffectation} from '../domain/EtudAffectation';
 import {EtudEvent} from '../domain/etudevent';
@@ -21,6 +22,12 @@ export class DataService extends PouchDatabase implements IDataService {
     constructor(name?: string) {
         super(name);
     }// constructor
+    public get_all_departements(): Promise<IDepartement[]> {
+        let model = new Departement();
+        return this.get_all_items(model).then((rr: IDepartement[]) => { 
+            return rr;
+            });
+    }
      public get_unite_matieres(uniteid: string): Promise<IUnite[]> {
         let m = new Matiere({ uniteid: uniteid });
         return this.get_all_items(m).then((rr: IMatiere[]) => {
@@ -75,11 +82,12 @@ export class DataService extends PouchDatabase implements IDataService {
         });
     }// get_person_departements
     public find_person_by_username(username: string): Promise<IPerson> {
-        let id = 'PER-' + username.toLowerCase();
+        let model = new Person({ username: username.trim().toLowerCase() });
+        let id = model.create_id();
         return this.db.then((dx) => {
             return dx.get(id);
         }).then((pOld) => {
-            if (pOld.type == 'etudperson') {
+            if (pOld.type == ETUDIANTPERSON_KEY) {
                 return new EtudiantPerson(pOld);
             } else {
                 return new Person(pOld);

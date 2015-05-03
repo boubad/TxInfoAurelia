@@ -4,6 +4,7 @@ import {IPerson} from '../../infodata.d';
 import {BaseItem} from './baseitem';
 import {MyCrypto} from './mycrypto';
 import {InfoRoot} from '../../inforoot';
+import {PERSON_KEY,PERSON_PREFIX} from '../../infoconstants';
 //
 //
 var cc = new MyCrypto();
@@ -85,7 +86,7 @@ export class Person extends BaseItem implements IPerson {
     } // constructor
     //
     public base_prefix(): string {
-        return 'PER';
+        return PERSON_PREFIX;
     }
     public create_id(): string {
         let s = this.start_key();
@@ -208,7 +209,7 @@ export class Person extends BaseItem implements IPerson {
     } // check_password
     //
     public type(): string {
-        return "person";
+        return PERSON_KEY;
     }
     public get username(): string {
         return (this._user !== undefined) ? this._user : null;

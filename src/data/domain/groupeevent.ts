@@ -3,6 +3,7 @@
 import {IGroupeEvent, IPerson} from '../../infodata.d';
 import {WorkItem} from './workitem';
 import {InfoRoot} from '../../inforoot';
+import {GROUPEEVENT_TYPE, GROUPEEVENT_PREFIX} from '../../infoconstants';
 //
 export class GroupeEvent extends WorkItem
     implements IGroupeEvent {
@@ -195,9 +196,9 @@ export class GroupeEvent extends WorkItem
         return s;
     } // create_id
     public type(): string {
-        return 'groupeevent';
+        return GROUPEEVENT_TYPE;
     }
     public base_prefix(): string {
-        return 'GVT';
+        return GROUPEEVENT_PREFIX;
     }
 }// class GroupeEvent

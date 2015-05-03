@@ -3,6 +3,7 @@
 import {IEtudiantPerson} from '../../infodata.d';
 import {Person} from './person';
 import {InfoRoot} from '../../inforoot';
+import {ETUDIANTPERSON_KEY} from '../../infoconstants';
 //
 export class EtudiantPerson extends Person implements IEtudiantPerson {
     private _dossier: string;
@@ -49,7 +50,7 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
         } // oMap
     } // constructor
     public type(): string {
-        return "etudperson";
+        return ETUDIANTPERSON_KEY;
     }
     //
     public get birthDate(): Date {

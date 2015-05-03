@@ -3,6 +3,7 @@
 import {IMatiere} from '../../infodata.d';
 import {DepSigleNameItem} from './depsiglename';
 import {InfoRoot} from '../../inforoot';
+import {MATIERE_TYPE, MATIERE_PREFIX} from '../../infoconstants';
 //
 export class Matiere extends DepSigleNameItem implements IMatiere {
     //
@@ -54,10 +55,10 @@ export class Matiere extends DepSigleNameItem implements IMatiere {
             s.trim().toUpperCase() : null;
     }
     public base_prefix(): string {
-        return 'MAT';
+        return MATIERE_PREFIX;
     }
     public type(): string {
-        return 'matiere';
+        return MATIERE_TYPE;
     }
     public start_key(): string {
         let s = this.base_prefix();

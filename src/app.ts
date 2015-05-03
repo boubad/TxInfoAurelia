@@ -10,7 +10,9 @@ export class App {
 	 configureRouter(config:IRouterConfig, router:Router){
     config.title = 'Aurelia';
     config.map([
-      { route: ['','welcome'],  moduleId: './welcome',      nav: true, title:'Welcome' },
+      { route: ['','home'],  moduleId: './data/model/home', nav: true, title:'Accueil' },
+      { route: 'profil',  moduleId: './data/model/profil', nav: true, title:'Profil' },
+      { route: 'admin',  moduleId: './data/model/admin', nav: true, title:'Administration' },
       { route: 'flickr',        moduleId: './flickr',       nav: true },
       { route: 'child-router',  moduleId: './child-router', nav: true, title:'Child Router' }
     ]);

@@ -3,6 +3,7 @@
 import {IPerson, IEtudAffectation} from '../../infodata.d';
 import {Affectation} from './affectation';
 import {InfoRoot} from '../../inforoot';
+import {ETUDAFFECTATION_TYPE, ETUDAFFECTATION_PREFIX} from '../../infoconstants';
 //
 export class EtudAffectation extends Affectation
     implements IEtudAffectation {
@@ -52,9 +53,9 @@ export class EtudAffectation extends Affectation
         }
     } // toInsertMap
     public base_prefix(): string {
-        return 'ETF';
+        return ETUDAFFECTATION_PREFIX;
     }
     public type(): string {
-        return 'etudaffectation';
+        return ETUDAFFECTATION_TYPE;
     }
 }

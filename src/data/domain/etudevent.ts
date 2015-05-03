@@ -3,6 +3,7 @@
 import {IEtudEvent, IPerson} from '../../infodata.d';
 import {WorkItem} from './workitem';
 import {InfoRoot} from '../../inforoot';
+import {ETUDEVENT_TYPE, ETUDEVENT_PREFIX} from '../../infoconstants';
 //
 export class EtudEvent extends WorkItem
     implements IEtudEvent {
@@ -87,9 +88,9 @@ export class EtudEvent extends WorkItem
         return s;
     } // create_id
     public type(): string {
-        return 'etudevent';
+        return ETUDEVENT_TYPE;
     }
     public base_prefix(): string {
-        return 'EVT';
+        return ETUDEVENT_PREFIX;
     }
 }// class EtudEvent

@@ -3,18 +3,18 @@
 /// <reference path='../../../../typings/pouchdb/pouchdb.d.ts' />
 /// <reference path='../../../infodata.d.ts' />
 //
-import {IBaseItem, IPerson, IWorkItem, IProfAffectation,IEtudAffectation,
-   IGroupeEvent, IEtudEvent, IItemFactory, IDatabaseManager} from '../../../infodata.d';
+import {IBaseItem, IPerson, IWorkItem, IProfAffectation, IEtudAffectation,
+IGroupeEvent, IEtudEvent, IItemFactory, IDatabaseManager} from '../../../infodata.d';
 import {Person} from '../../domain/person';
 import {EtudAffectation} from '../../domain/EtudAffectation';
 import {EtudEvent} from '../../domain/etudevent';
 import {GroupeEvent} from '../../domain/groupeevent';
 import {EtudiantPerson} from '../../domain/etudperson';
 import {ItemFactory} from '../../domain/itemfactory';
+import {DATABASE_NAME, PERSON_KEY, SUPER_USERNAME, SUPER_LASTNAME,
+SUPER_FIRSTNAME, ROLE_SUPER, ROLE_ADMIN} from '../../../infoconstants';
 //
 declare var PouchDB: any;
-//
-export const DATABASE_NAME = 'geninfo';
 //
 const HAS_POUCHDB = (PouchDB !== undefined) && (PouchDB !== null);
 //
@@ -89,13 +89,12 @@ export class PouchDatabase implements IDatabaseManager {
     }// maintains_doc
     public check_admin(): Promise<any> {
         let xdb: PouchDB = null;
-        let username = 'admin';
         let pPers = new Person({
-            username: username,
-            firstname: 'Administrator',
-            lastname: 'System',
-            type: 'person',
-            roles: ['super', 'admin']
+            username: SUPER_USERNAME,
+            firstname: SUPER_FIRSTNAME,
+            lastname: SUPER_LASTNAME,
+            type: PERSON_KEY,
+            roles: [ROLE_SUPER, ROLE_ADMIN]
         }
             );
         pPers.reset_password();
@@ -135,7 +134,7 @@ export class PouchDatabase implements IDatabaseManager {
     }//find_item_by_id
     public find_items_array(ids: string[]): Promise<IBaseItem[]> {
         let generator = this._gen;
-        let options: PouchAllDocsOptions = { keys: ids, include_doc: true};
+        let options: PouchAllDocsOptions = { keys: ids, include_doc: true };
         return this.db.then((xdb) => {
             return xdb.allDocs(options).then((rr) => {
                 let oRet: IBaseItem[] = [];
@@ -267,17 +266,17 @@ export class PouchDatabase implements IDatabaseManager {
         });
     }//remove_all_items
     protected internal_maintains_one_item(xdb: PouchDB, item: IBaseItem): Promise<IBaseItem> {
-        let oMap = {};
+        let oMap: any = {};
         item.to_map(oMap);
         if ((item.id === undefined) || (item.id === null)) {
-            oMap['_id'] = item.create_id();
+            oMap._id = item.create_id();
         }
-        let id = oMap['_id'];
+        let id = oMap._id;
         let generator = this._gen;
         return xdb.get(id, { attachments: true }).then((p) => {
-            oMap['_rev'] = p._rev;
-            if ((p['_attachments'] !== undefined) && (p['_attachments'] !== null)) {
-                oMap['_attachments'] = p['_attachments'];
+            oMap._rev = p._rev;
+            if ((p._attachments !== undefined) && (p._attachments !== null)) {
+                oMap._attachments = p._attachments;
             }
             return xdb.put(oMap);
         }, (err) => {
@@ -356,7 +355,7 @@ export class PouchDatabase implements IDatabaseManager {
         }
         let pid = item.personid;
         let self = this;
-        return this.find_item_by_id(pid).then((pPers:IPerson) => {
+        return this.find_item_by_id(pid).then((pPers: IPerson) => {
             if (pPers === null) {
                 throw new Error('unknown person.');
             }
@@ -369,6 +368,4 @@ export class PouchDatabase implements IDatabaseManager {
             return self.maintains_item(item);
         });
     }// maintains_workitem
-    
-    
 }// class PouchDatabase

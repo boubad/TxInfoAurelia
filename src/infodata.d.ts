@@ -194,6 +194,7 @@ export interface IDatabaseManager {
     remove_all_items: (startKey: string, endKey: string) => Promise<any>;
 }// IDatabaseManager
 export interface IDataService extends IDatabaseManager {
+    get_all_departements: () => Promise<IDepartement[]>;
     get_annee_semestres: (anneeid: string) => Promise<ISemestre[]>;
     get_unite_matieres: (uniteid: string) => Promise<IMatiere[]>;
     get_departement_annees: (depid: string) => Promise<IAnnee[]>;

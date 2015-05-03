@@ -2,6 +2,7 @@
 //
 import {ISemestre} from '../../infodata.d';
 import { IntervalItem} from "./intervalitem";
+import {SEMESTRE_TYPE, SEMESTRE_PREFIX} from '../../infoconstants';
 //
 export class Semestre extends IntervalItem implements ISemestre {
     public _anneeid: string;
@@ -21,7 +22,7 @@ export class Semestre extends IntervalItem implements ISemestre {
             s.trim() : null;
     }
     public base_prefix(): string {
-        return 'SEM';
+        return SEMESTRE_PREFIX;
     }
     public start_key(): string {
         let s = this.base_prefix();
@@ -40,6 +41,6 @@ export class Semestre extends IntervalItem implements ISemestre {
         }
     } // to_insert_map
     public type(): string {
-        return 'semestre';
+        return SEMESTRE_TYPE;
     }
 } // class Semestre

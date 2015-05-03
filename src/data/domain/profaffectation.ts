@@ -3,6 +3,7 @@
 import {IProfAffectation, IPerson} from '../../infodata.d';;
 import {Affectation} from './affectation';
 import {InfoRoot} from '../../inforoot';
+import {PROFAFFECTATION_TYPE, PROFAFFECTATION_PREFIX} from '../../infoconstants';
 //
 export class ProfAffectation extends Affectation
     implements IProfAffectation {
@@ -116,9 +117,9 @@ export class ProfAffectation extends Affectation
         }
     } // toInsertMap
     public base_prefix(): string {
-        return 'AFP';
+        return PROFAFFECTATION_PREFIX;
     }
     public type(): string {
-        return 'profaffectation';
+        return PROFAFFECTATION_TYPE;
     }
 }

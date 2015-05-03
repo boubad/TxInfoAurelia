@@ -3,6 +3,7 @@
 import {IPerson, IEnseignant} from '../../infodata.d';
 import {DepartementPerson} from './depperson';
 import {InfoRoot} from '../../inforoot';
+import {ENSEIGNANT_TYPE, ENSEIGNANT_PREFIX, ROLE_PROF} from '../../infoconstants';
 //
 export class Enseignant extends DepartementPerson implements IEnseignant {
     //
@@ -10,10 +11,10 @@ export class Enseignant extends DepartementPerson implements IEnseignant {
         super(oMap);
     }// constructor
     public type(): string {
-        return 'prof';
+        return ENSEIGNANT_TYPE;
     }
     public base_prefix(): string {
-        return 'PRF';
+        return ENSEIGNANT_PREFIX;
     }
     public update_person(pPers: IPerson): void {
         if ((pPers !== undefined) && (pPers !== null)) {
@@ -23,7 +24,7 @@ export class Enseignant extends DepartementPerson implements IEnseignant {
                 if (x === null) {
                     x = [];
                 }
-                x.push('prof');
+                x.push(ROLE_PROF);
                 pPers.roles = x;
             }
             let cont: string[] = pPers.enseignantids;
