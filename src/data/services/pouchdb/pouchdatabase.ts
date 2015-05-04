@@ -180,8 +180,8 @@ export class PouchDatabase implements IDatabaseManager {
                     if ((data !== undefined) && (data !== null)) {
                         for (let r of data) {
                             if ((r.doc !== undefined) && (r.doc !== null)) {
-                              let xx = JSON.stringify(r.doc);
-                              console.log(xx);
+                              //let xx = JSON.stringify(r.doc);
+                              //console.log(xx);
                                 let x = generator.create(r.doc);
                                 if (x !== null) {
                                     oRet.push(x);
@@ -211,8 +211,7 @@ export class PouchDatabase implements IDatabaseManager {
                     let data = rr.rows;
                     if ((data !== undefined) && (data !== null)) {
                         for (let r of data) {
-                            let val = r.value;
-                            if ((val !== undefined) && (val !== null)) {
+                            if ((r.doc !== undefined) && (r.doc !== null)) {
                                 let x = generator.create(r.doc);
                                 if (x !== null) {
                                     oRet.push(x);
@@ -237,10 +236,15 @@ export class PouchDatabase implements IDatabaseManager {
         return this.db.then((xdb) => {
             return xdb.allDocs(options).then((rr) => {
                 let oRet: string[] = [];
-                for (let r of rr.rows) {
-                    let id = r.id;
+                if ((rr !== undefined) && (rr !== null) && (rr.rows !== undefined) &&
+                    (rr.rows !== null)){
+                    for (let r of rr.rows) {
+                        if (r.id !== undefined){
+                            let id = r.id;
                     oRet.push(id);
+                        }
                 }// r
+                }
                 return oRet;
             });
         });

@@ -25,7 +25,7 @@ export class Semestre extends IntervalItem implements ISemestre {
         return SEMESTRE_PREFIX;
     }
     public start_key(): string {
-        let s = this.base_prefix();
+        let s = 'SEM';
         if ((s !== null) && (this.anneeid !== null)) {
             s = s + '-' + this.anneeid;
         }

@@ -18,7 +18,7 @@ export class DepSigleNameItem extends SigleNameItem implements IDepSigleNameItem
         return (this._departementid !== undefined) ? this._departementid : null;
     }
     public set departementid(s: string) {
-        this._departementid = ((s !== undefined) && (s !== null) && (s.trim.length > 0)) ?
+        this._departementid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public start_key(): string {
@@ -31,15 +31,12 @@ export class DepSigleNameItem extends SigleNameItem implements IDepSigleNameItem
     public create_id(): string {
         let s = this.start_key();
         if ((s !== null) && (this.sigle !== null)) {
-            let ss = InfoRoot.check_name(this.sigle);
-            if (ss !== null) {
-                s = s + '-' + ss;
-            }
+                s = s + '-' + this.sigle.trim().toUpperCase();
         }
         return s;
     } // create_id
     public is_storeable(): boolean {
-        return super.is_storeable() && (this.departementid !== null);
+        return (this.sigle !== null) && (this.departementid !== null);
     }
     public to_map(oMap: any): void {
         super.to_map(oMap);

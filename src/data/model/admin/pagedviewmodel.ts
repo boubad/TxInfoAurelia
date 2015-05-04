@@ -20,6 +20,10 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
     public hasAvatars: boolean;
     public _pageStatus: string;
     //
+    private _sigle:string;
+    private _name:string;
+    private _desc:string;
+    //
     public items: T[];
     //
     constructor(userinfo: UserInfo, model: T) {
@@ -35,6 +39,9 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
         this.hasAvatars = false;
         this._pageStatus = null;
         this._old_item = null;
+        this._sigle = null;
+        this._name = null;
+        this._desc = null;
     }// constructor
     //
     protected create_item(): T {
@@ -62,50 +69,56 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
         let x = this.currentItem;
         return (x !== null) && (x.id !== null) && (x.rev !== null);
     }
-    public get canSave(): boolean {
-        let x = this.currentItem;
-        return (x !== null) && x.is_storeable();
+    protected is_storeable():boolean {
+      return (this.sigle !== null);
+    }
+    protected retrieve_item(): T {
+      let x = this.currentItem;
+      x.sigle = this.sigle;
+      x.name = this.name;
+      x.description = this.description;
+      return x;
     }
     protected post_change_item(): any {
-
+        let x = this.currentItem;
+        this.sigle = (x !== null) ? x.sigle : null;
+        this.name = (x !== null) ? x.name : null;
+        this.description = (x !== null) ? x.description : null;
     }// post_change_item
+    public get canSave(): boolean {
+        return this.is_storeable();
+    }
     //
     public get currentItem(): T {
-        return (this._current_item !== undefined) ? this._current_item : null;
+       if ((this._current_item === undefined) || (this._current_item === null)){
+         this._current_item = this.create_item();
+       }
+        return this._current_item;
     }
     public set currentItem(s: T) {
         this._current_item = (s !== undefined) ? s : null;
         this.post_change_item();
     }
     public get sigle(): string {
-        let x = this.currentItem;
-        return (x !== null) ? x.sigle : null;
+      return this._sigle;
     }
     public set sigle(s: string) {
-        let x = this.currentItem;
-        if (x !== null) {
-            x.sigle = s;
-        }
+        this._sigle = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
+        s.trim().toUpperCase() : null;
     }
     public get name(): string {
-        let x = this.currentItem;
-        return (x !== null) ? x.name : null;
+        return this._name;
     }
     public set name(s: string) {
-        let x = this.currentItem;
-        if (x !== null) {
-            x.name = s;
-        }
+      this._name = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
+      s.trim() : null;
     }
     public get description(): string {
-        let x = this.currentItem;
-        return (x !== null) ? x.description : null;
+      return this._desc;
     }
     public set description(s: string) {
-        let x = this.currentItem;
-        if (x !== null) {
-            x.description = s;
-        }
+      this._desc = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
+      s.trim() : null;
     }
     public refresh(): any {
         if (this._item_model === null) {
@@ -142,10 +155,7 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
         this.clear_error();
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
         var self = this;
-      //  console.log('START: ' + startKey);
-    //    console.log('END: ' + endKey);
         return this.dataService.get_items(model, startKey, endKey).then((rr) => {
-        //  console.log('REFRESH COUNT 0: ' + rr.length);
             self._add_mode = false;
             if (self.hasAvatars) {
                 return self.retrieve_avatars(rr);
@@ -156,7 +166,6 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
             let pSel: T = null;
             if ((dd !== undefined) && (dd !== null)) {
                 self.items = dd;
-              //  console.log('REFRESH COUNT: ' + self.items.length);
                 if (oldid !== null) {
                     let n = dd.length;
                     for (let i = 0; i < n; ++i) {
@@ -214,10 +223,13 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
         });
     }// refreshAll
     public save(): any {
-        let item = this.currentItem;
+        let item = this.retrieve_item();
         if (item === null) {
             return false;
         }
+        let xx:any = {};
+        item.to_map(xx);
+        console.log(JSON.stringify(xx));
         if (!item.is_storeable()) {
             return false;
         }

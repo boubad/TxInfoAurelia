@@ -18,7 +18,7 @@ export class DepartementChildItem extends BaseItem
         return (this._departementid !== undefined) ? this._departementid : null;
     }
     public set departementid(s: string) {
-        this._departementid = ((s !== undefined) && (s !== null) && (s.trim.length > 0)) ?
+        this._departementid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public start_key(): string {

@@ -15,7 +15,7 @@ export class Unites extends DepPagedViewModel<Unite> {
     }// constructor
     protected create_item(): Unite {
         let p = new Unite({ departementid: this.departementid });
+        p.departementid = this.departementid;
         return p;
     }
 }// class Unites
-

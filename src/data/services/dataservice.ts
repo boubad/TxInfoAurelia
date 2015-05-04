@@ -29,36 +29,54 @@ export class DataService extends PouchDatabase implements IDataService {
             });
     }
      public get_unite_matieres(uniteid: string): Promise<IUnite[]> {
+         if ((uniteid === undefined) || (uniteid === null)){
+             return Promise.resolve([]);
+         }
         let m = new Matiere({ uniteid: uniteid });
         return this.get_all_items(m).then((rr: IMatiere[]) => {
             return rr;
         });
     }// get_unite_matieres
      public get_annee_semestres(anneeid: string): Promise<ISemestre[]> {
+         if ((anneeid === undefined) || (anneeid === null)){
+             return Promise.resolve([]);
+         }
         let m = new Semestre({ anneeid: anneeid });
         return this.get_all_items(m).then((rr: ISemestre[]) => {
             return rr;
         });
     }// get_annee_semestres
     public get_departement_annees(depid: string): Promise<IAnnee[]> {
+        if ((depid === undefined) || (depid === null)){
+            return Promise.resolve([]);
+        }
         let m = new Annee({ departementid: depid });
         return this.get_all_items(m).then((rr: IAnnee[]) => {
             return rr;
         });
     }// get_departement_annees
     public get_departement_unites(depid: string): Promise<IUnite[]> {
+        if ((depid === undefined) || (depid === null)){
+            return Promise.resolve([]);
+        }
         let m = new Unite({ departementid: depid });
         return this.get_all_items(m).then((rr: IUnite[]) => {
             return rr;
         });
     }// get_departement_unites
     public get_departement_groupes(depid: string): Promise<IGroupe[]> {
+        if ((depid === undefined) || (depid === null)){
+            return Promise.resolve([]);
+        }
         let m = new Groupe({ departementid: depid });
         return this.get_all_items(m).then((rr: IGroupe[]) => {
             return rr;
         });
     }// get_departement_groupes
     public get_person_departements(personid: string): Promise<IDepartement[]> {
+        if ((personid === undefined) || (personid === null)){
+            return Promise.resolve([]);
+        }
         let self = this;
         let cont: string[] = null;
         return this.find_item_by_id(personid).then((pPers: IPerson) => {
@@ -82,6 +100,9 @@ export class DataService extends PouchDatabase implements IDataService {
         });
     }// get_person_departements
     public find_person_by_username(username: string): Promise<IPerson> {
+        if ((username === undefined) || (username === null)){
+            return Promise.resolve(null);
+        }
         let model = new Person({ username: username.trim().toLowerCase() });
         let id = model.create_id();
         return this.db.then((dx) => {
@@ -104,12 +125,19 @@ export class DataService extends PouchDatabase implements IDataService {
             });
     }//find_person_by_username
     public get_etudaffectations(semestreid: string, groupeid: string): Promise<IEtudAffectation[]> {
+        if ((semestreid === undefined) || (semestreid === null) ||
+            (groupeid === undefined) || (groupeid === null)){
+            return Promise.resolve([]);
+        }        
         let model = new EtudAffectation({ semestreid: semestreid, groupeid: groupeid });
         return this.get_all_items(model).then((rr: IEtudAffectation[]) => {
             return rr;
         });
     }//get_etudaffectations
     public get_groupeevent_evts(grpeventid: string, bNote?: boolean): Promise<IEtudEvent[]> {
+        if ((grpeventid === undefined) || (grpeventid === null)){
+            Promise.resolve([]);
+        }
         let model = new EtudEvent({ groupeeventid: grpeventid });
         let m = ((bNote !== undefined) && (bNote !== null)) ? bNote : false;
         return this.get_all_items(model).then((aa: IEtudEvent[]) => {
@@ -128,6 +156,9 @@ export class DataService extends PouchDatabase implements IDataService {
         });
     }//get_groupeevent_evts
     public get_groupeevent_all_notes(grpeventid: string): Promise<IEtudEvent[]> {
+         if ((grpeventid === undefined) || (grpeventid === null)){
+            Promise.resolve([]);
+        }
         let self = this;
         let depid: string = null;
         let anneeid: string = null;

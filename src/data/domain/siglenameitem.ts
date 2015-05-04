@@ -35,10 +35,7 @@ export class SigleNameItem extends BaseItem implements ISigleNameItem {
     public create_id(): string {
         let s = this.start_key();
         if ((s !== null) && (this.sigle !== null)) {
-            let ss = InfoRoot.check_name(this.sigle);
-            if (ss !== null) {
-                s = s + "-" + ss;
-            }
+                s = s + "-" + this.sigle.trim().toUpperCase();
         }
         return s;
     } // create_id

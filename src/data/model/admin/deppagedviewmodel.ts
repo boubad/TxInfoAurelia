@@ -32,6 +32,7 @@ export class DepPagedViewModel<T extends IDepSigleNameItem> extends PagedViewMod
     //
     public activate(params?: any, config?: any, instruction?: any): any {
         let self = this;
+        this._item_model = this.create_item();
         return super.activate(params, config, instruction).then((r) => {
             return self.refresh_data();
         }).then((r) => {
@@ -40,21 +41,28 @@ export class DepPagedViewModel<T extends IDepSigleNameItem> extends PagedViewMod
         });
     }// activate
     public get departement(): Departement {
-        return ((this._departement !== null) && (this._departement.id !== null)) ?
-            this._departement : null;
+        return this._departement;
     }
     public set departement(s: Departement) {
-        let self = this;
-        this._departement = ((s !== undefined) && (s !== null) && (s.id !== null)) ? s : null;
+        this._departement = s;
         let id = (this._departement !== null) ? this._departement.id : null;
         this.userInfo.departementid = id;
-        this.userInfo.departement.then((d: Departement) => {
-            self._departement = d;
-            self._item_model = self.create_item();
-            self.refreshAll();
-        });
+        this._item_model.departementid = id;
+        this.refreshAll();
     }
     public get departementid(): string {
-        return (this.departement !== null) ? this.departement.id : null;
+      let id =  this.userInfo.departementid;
+      if (id === null){
+        id = (this.departement !== null) ? this.departement.id : null;
+      }
+      return id;
+    }
+    protected is_storeable():boolean {
+      return super.is_storeable() && (this.departementid !== null);
+    }
+    protected retrieve_item(): T {
+      let x = super.retrieve_item();
+      x.departementid = this.departementid;
+      return x;
     }
 }// class Dep PagedViewModel
