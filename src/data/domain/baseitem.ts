@@ -37,7 +37,7 @@ export class BaseItem extends ElementDesc implements IBaseItem {
         return super.is_storeable() && (this.type() !== null) && (this.base_prefix() !== null) &&
             (this.create_id() !== null);
     }
-    public toMap(oMap: any): void {
+    public to_map(oMap: any): void {
         super.to_map(oMap);
         oMap.type = this.type();
         if (this.attachments !== null) {
@@ -46,6 +46,7 @@ export class BaseItem extends ElementDesc implements IBaseItem {
         if (this.attachedDocs !== null) {
             oMap.attachedDocs = this.attachedDocs;
         }
+        //console.log('BaseItem to map ' + JSON.stringify(oMap));
     }// toMap
     //
     public type(): string {

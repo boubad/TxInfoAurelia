@@ -216,7 +216,7 @@ export class Person extends BaseItem implements IPerson {
     }
     public set username(s: string) {
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            this._user = InfoRoot.check_name(s, true);
+            this._user = s.trim().toLowerCase();
         } else {
             this._user = null;
         }

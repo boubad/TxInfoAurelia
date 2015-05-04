@@ -17,6 +17,7 @@ SUPER_FIRSTNAME, ROLE_SUPER, ROLE_ADMIN} from '../../../infoconstants';
 declare var PouchDB: any;
 //
 const HAS_POUCHDB = (PouchDB !== undefined) && (PouchDB !== null);
+let _database = new PouchDB(DATABASE_NAME);
 //
 export class PouchDatabase implements IDatabaseManager {
     private _gen: IItemFactory;
@@ -157,7 +158,7 @@ export class PouchDatabase implements IDatabaseManager {
                 return oRet;
             });
         });
-    }//get_items_array    
+    }//get_items_array
     public get_items(item: IBaseItem, startKey?: any, endKey?: any): Promise<IBaseItem[]> {
         let options: PouchGetOptions = { include_docs: true };
         if ((startKey !== undefined) && (startKey !== null)) {
@@ -178,8 +179,9 @@ export class PouchDatabase implements IDatabaseManager {
                     let data = rr.rows;
                     if ((data !== undefined) && (data !== null)) {
                         for (let r of data) {
-                            let val = r.value;
-                            if ((val !== undefined) && (val !== null)) {
+                            if ((r.doc !== undefined) && (r.doc !== null)) {
+                              let xx = JSON.stringify(r.doc);
+                              console.log(xx);
                                 let x = generator.create(r.doc);
                                 if (x !== null) {
                                     oRet.push(x);
@@ -304,6 +306,7 @@ export class PouchDatabase implements IDatabaseManager {
             if ((item.id === undefined) || (item.id === null)) {
                 oMap._id = item.create_id();
             }
+          //  console.log('INPUT MAINTAINS: ' + JSON.stringify(oMap));
             id = oMap._id;
             return xdb.get(id,{attachments:true});
             }).then((p)=>{
@@ -320,6 +323,7 @@ export class PouchDatabase implements IDatabaseManager {
             }).then((z)=>{
                 return xdb.get(id, { attachments: true });
             }).then((pk)=>{
+              //console.log('OUTPUT MAINTAINS: ' + JSON.stringify(pk));
                 return generator.create(pk);
             });
     }// maintains_one_item

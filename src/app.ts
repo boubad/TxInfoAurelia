@@ -10,11 +10,9 @@ export class App {
 	 configureRouter(config:IRouterConfig, router:Router){
     config.title = 'InfoApp';
     config.map([
-      { route: ['','home'],  moduleId: './data/model/home', nav: true, title:'Accueil' },
+      { route: ['','home'],  moduleId: './home', nav: true, title:'Accueil' },
       { route: 'profil',  moduleId: './data/model/profil', nav: true, title:'Profil' },
-      { route: 'admin',  moduleId: './data/model/admin', nav: true, title:'Administration' },
-      { route: 'flickr',        moduleId: './flickr',       nav: true },
-      { route: 'child-router',  moduleId: './child-router', nav: true, title:'Child Router' }
+      { route: 'admin-router',  moduleId: './data/model/admin/admin-router', nav: true, title:'Administration' }
     ]);
 
     this.router = router;

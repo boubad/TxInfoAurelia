@@ -1,7 +1,7 @@
 //baseviewmodel.ts
 //
 import {UserInfo} from './userinfo';
-import {IDataService, IPerson} from '../../infodata.d';
+import {IBaseItem, IDataService, IPerson} from '../../infodata.d';
 import {DataService} from '../services/dataservice';
 import {InfoRoot} from '../../inforoot';
 //
@@ -11,10 +11,10 @@ export class BaseViewModel {
     public title: string;
     public errorMessage: string;
     public infoMessage: string;
-    private _photoUrl:string;
-    private _photoData:Blob;
+    private _photoUrl: string;
+    private _photoData: Blob;
     //
-    constructor(userinfo:UserInfo) {
+    constructor(userinfo: UserInfo) {
         this._user = userinfo;
         this.title = null;
         this.errorMessage = null;
@@ -49,20 +49,20 @@ export class BaseViewModel {
         let x = this.userInfo.person;
         let self = this;
         this._photoData = null;
-        if ((x !== null) && (x.id !== null) && (x.avatarid !== null)){
-            return this.dataService.find_attachment(x.id,x.avatarid).then((blob)=>{
-                if (blob !== null){
+        if ((x !== null) && (x.id !== null) && (x.avatarid !== null)) {
+            return this.dataService.find_attachment(x.id, x.avatarid).then((blob) => {
+                if (blob !== null) {
                     self._photoData = blob;
-                } 
+                }
                 return true;
-                });
-            } else {
-                this.update_title();
-                return Promise.resolve(true);
-            }
+            });
+        } else {
+            this.update_title();
+            return Promise.resolve(true);
+        }
     }// activate
-    public deactivate(): any{
-        if (this._photoUrl !== null){
+    public deactivate(): any {
+        if (this._photoUrl !== null) {
             InfoRoot.revokeUrl(this._photoUrl);
             this._photoUrl = null;
         }
@@ -103,7 +103,7 @@ export class BaseViewModel {
         return (x !== null) ? x.fullname : null;
     }
     public get photoUrl(): string {
-        if ((this._photoUrl === null) && (this._photoData !== null)){
+        if ((this._photoUrl === null) && (this._photoData !== null)) {
             this._photoUrl = InfoRoot.createUrl(this._photoData);
         }
         return this._photoUrl;
@@ -133,4 +133,36 @@ export class BaseViewModel {
         return (x !== null) && x.is_etud;
     }
     public set isEtud(b: boolean) { }
+    protected retrieve_one_avatar(item: IBaseItem): Promise<IBaseItem> {
+        if ((item === undefined) || (item === null)) {
+            return Promise.resolve(null);
+        }
+        if (item.url !== null) {
+            InfoRoot.revokeUrl(item.url);
+            item.url = null;
+        }
+        let id = item.avatardocid();
+        let avatarid = item.avatarid;
+        if ((id === null) || (avatarid === null)) {
+            return Promise.resolve(item);
+        }
+        return this.dataService.find_attachment(id, avatarid).then((blob) => {
+            item.url = InfoRoot.createUrl(blob);
+            return item;
+        });
+    }// rerieve_one_avatar
+    protected retrieve_avatars(items: IBaseItem[]): Promise<IBaseItem[]> {
+        if ((items === undefined) || (items === null)) {
+            return Promise.resolve([]);
+        }
+        if (items.length < 1) {
+            return Promise.resolve([]);
+        }
+        let pp: Promise<IBaseItem>[] = [];
+        for (let p of items) {
+            let x = this.retrieve_one_avatar(p);
+            pp.push(x);
+        }// p
+        return Promise.all(pp);
+    }// retrive_avatars
 }// class BaseViewModel

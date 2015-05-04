@@ -72,7 +72,7 @@ export class InfoRoot {
     public static check_name(s: string, bSpace?: boolean): string {
         let sRet: string = null;
         if ((s !== undefined) && (s !== null)) {
-            let sx = s.trim().toLowerCase();
+            let sx = s.trim().toUpperCase();
             let n = sx.length;
             sRet = '';
             let b = ((bSpace !== undefined) && (bSpace !== null)) ? bSpace : false;

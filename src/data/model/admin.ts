@@ -18,6 +18,6 @@ export class Admin extends BaseViewModel {
     }// constructor
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
-        return (px !== null) && px.is_super;
+        return (px !== null) && px.is_admin;
     }// activate
 }// class Profil

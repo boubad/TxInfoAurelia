@@ -14,4 +14,8 @@ export class Annee extends IntervalItem implements IAnnee {
     public base_prefix(): string {
         return ANNEE_PREFIX;
     }
+    public toMap(oMap: any): void {
+        super.to_map(oMap);
+        oMap.type = ANNEE_TYPE;
+    }// toMap
 } // class Annee
