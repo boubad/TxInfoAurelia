@@ -106,6 +106,9 @@ export interface IDepartementPerson extends IDepartementChildItem {
 export interface IEnseignant extends IDepartementPerson {
 
 }// interface IEnseignant
+export interface IAdministrator extends IDepartementPerson {
+
+}// interface IAdministrator
 export interface IEtudiant extends IDepartementPerson {
 
 }// interface IEtudiant

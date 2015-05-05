@@ -34,6 +34,7 @@ export class PagedViewModel<T extends ISigleNameItem> extends BaseViewModel {
         this._current_page = 0;
         this._pages_count = 0;
         this._data_ids = [];
+        this._old_item = null;
         this._current_item = null;
         this.items = [];
         this.hasAvatars = false;

@@ -4,56 +4,18 @@
 import {inject} from 'aurelia-framework';
 //
 import {UserInfo} from '../userinfo';
-import {DepPagedViewModel} from './deppagedviewmodel';
+import {SigleNameViewModel} from './siglenameviewmodel';
 import {Matiere} from '../../domain/matiere';
 import {Unite} from '../../domain/unite';
 import {InfoRoot} from '../../../inforoot';
 //
-export class Matieres extends DepPagedViewModel<Matiere> {
-    //
-    public unites: Unite[];
-    private _unite: Unite;
-    //
-    private _genre: string;
-    private _mat_module: string;
-    private _coef: number;
-    private _ecs: number;
+export class Matieres extends SigleNameViewModel<Matiere> {
     //
     static inject() { return [UserInfo]; }
     constructor(userinfo: UserInfo) {
-        super(userinfo, new Matiere());
+        super(userinfo);
         this.title = 'Matières';
-        this._unite = null;
-        this._genre = null;
-        this._mat_module = null;
-        this._coef = null;
-        this._ecs = null;
     }// constructor
-    protected refresh_data(): any {
-        let self = this;
-        let userinfo = this.userInfo;
-        return super.refresh_data().then((r) => {
-            return userinfo.unites;
-        }).then((aa: Unite[]) => {
-            self.unites = aa;
-            return true;
-        });
-    }// refresh_data
-    public get unite(): Unite {
-        return ((this._unite !== null) && (this._unite.id !== null)) ?
-            this._unite : null;
-    }
-    public set unite(s: Unite) {
-        let self = this;
-        this._unite = ((s !== undefined) && (s !== null) && (s.id !== null)) ? s : null;
-        let id = (this._unite !== null) ? this._unite.id : null;
-        this.userInfo.uniteid = id;
-        this._item_model.uniteid = id;
-        this.refreshAll();
-    }
-    public get uniteid(): string {
-        return (this.unite !== null) ? this.unite.id : null;
-    }
     protected create_item(): Matiere {
         let p = new Matiere({
             departementid: this.departementid,
@@ -61,43 +23,55 @@ export class Matieres extends DepPagedViewModel<Matiere> {
         });
         return p;
     }
+    protected post_change_unite(): Promise<any> {
+        let self = this;
+        return super.post_change_unite().then((r) => {
+            self.modelItem.uniteid = self.uniteid;
+            self.modelItem.departementid = this.departementid;
+            self.refreshAll();
+        });
+    }// post_change_departement
     public get genre(): string {
-        return this._genre;
+        let x = this.currentItem;
+        return (x !== null) ? x.genre : null;
     }
     public set genre(s: string) {
-        this._genre = s;
+        let x = this.currentItem;
+        if (x !== null) {
+            x.genre = s;
+        }
     }
     public get mat_module(): string {
-        return this._mat_module;
+        let x = this.currentItem;
+        return (x !== null) ? x.mat_module : null;
     }
     public set mat_module(s: string) {
-        this._mat_module = s;
+        let x = this.currentItem;
+        if (x !== null) {
+            x.mat_module = s;
+        }
     }
     public get coefficient(): string {
-        return InfoRoot.number_to_string(this._coef);
+        let x = this.currentItem;
+        return (x !== null) ? InfoRoot.number_to_string(x.coefficient) : null;
     }
     public set coefficient(s: string) {
-        let d = InfoRoot.string_to_number(s);
-        this._coef = ((d !== null) && (d > 0)) ? d : null;
+        let x = this.currentItem;
+        if (x !== null) {
+            let d = InfoRoot.string_to_number(s);
+            x.coefficient = ((d !== null) && (d > 0)) ? d : null;
+        }
     }
     public get ecs(): string {
-        return InfoRoot.number_to_string(this._ecs);
+        let x = this.currentItem;
+        return (x !== null) ? InfoRoot.number_to_string(x.ecs) : null;
     }
     public set ecs(s: string) {
-        let d = InfoRoot.string_to_number(s);
-        this._ecs = ((d !== null) && (d > 0)) ? d : null;
+        let x = this.currentItem;
+        if (x !== null) {
+            let d = InfoRoot.string_to_number(s);
+            x.ecs = ((d !== null) && (d > 0)) ? d : null;
+        }
     }
-     protected is_storeable():boolean {
-      return super.is_storeable() && (this.uniteid !== null);
-    }
-    protected retrieve_item(): Matiere {
-      let x = super.retrieve_item();
-      x.uniteid = this.uniteid;
-      x.genre = this.genre;
-      x.mat_module = this.mat_module;
-      x.coefficient = this._ecs;
-      x.ecs = this._ecs;
-      return x;
-    }
-}// class Semestres
+}// class Matieres
 

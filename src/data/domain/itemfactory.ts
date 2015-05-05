@@ -17,10 +17,11 @@ import {ProfAffectation} from './profaffectation';
 import {EtudAffectation} from './etudaffectation';
 import {GroupeEvent} from './groupeevent';
 import {EtudEvent} from './etudevent';
+import {Administrator} from './administrator';
 import {PERSON_KEY, ETUDIANTPERSON_KEY, DEPARTEMENT_TYPE, GROUPE_TYPE,
 UNITE_TYPE, ANNEE_TYPE, SEMESTRE_TYPE, MATIERE_TYPE, ETUDIANT_TYPE, ENSEIGNANT_TYPE,
 PROFAFFECTATION_TYPE, ETUDAFFECTATION_TYPE, GROUPEEVENT_TYPE,
-ETUDEVENT_TYPE} from '../../infoconstants';
+ETUDEVENT_TYPE,ADMINISTRATOR_TYPE} from '../../infoconstants';
 //
 export class ItemFactory implements IItemFactory {
     constructor() { }
@@ -60,6 +61,8 @@ export class ItemFactory implements IItemFactory {
             return new GroupeEvent(oMap);
         } else if (t == ETUDEVENT_TYPE) {
             return new EtudEvent(oMap);
+        } else if (t == ADMINISTRATOR_TYPE){
+            return new Administrator(oMap);
         }
         return null;
     }// create

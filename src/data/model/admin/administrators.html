@@ -51,34 +51,53 @@
 				<div>
 					<button type="button" click.delegate="refreshAll()" class="btn btn-primary">Rafraîchir</button>
 				</div>
+				<div if.bind="isEditItem" class="form-group">
+					<div if.bind="hasAvatarUrl">
+						<img src.bind="avatarUrl" height="128"></img>
+						<button type="button" show.bind="canRemoveAvatar" class="btn btn-primary" click.delegate="removeAvatar()">Supprimer</button>
+					</div>
+					<div>
+						<input type="file" id="fileToUpload" accept="image/png, image/jpeg" change.delegate="avatarFileChanged($event)"></input>
+					</div>
+					<div show.bind="hasWorkingUrl">
+						<img src.bind="workingUrl" height="128"></img>
+						<button type="button" show.bind="canSaveAvatar" class="btn btn-primary" click.delegate="saveAvatar()">Modifier</button>
+					</div>
+				</div>
 				<form role="form">
 					<div class="form-group">
-						<label class="form-label" for="startDate">Date de début</label>
-						<input class="form-control" type="date" id="startDate" value.bind="startDate" required></input>
+						<label class="form-label" for="username">Identifiant</label>
+						<input class="form-control" type="text" id="username" value.bind="username"
+					placeholder="Identifiant" required></input>
 					</div>
 					<div class="form-group">
-						<label class="form-label" for="endDate">Date de fin</label>
-						<input class="form-control" type="date" id="endDate" value.bind="endDate" required></input>
+						<label class="form-label" for="lastname">Nom de famille</label>
+						<input class="form-control" type="text" id="lastname" value.bind="lastname"
+					placeholder="Nom de famille" required></input>
 					</div>
 					<div class="form-group">
-						<label class="form-label" for="sigle">Abbréviation</label>
-						<input class="form-control" type="text" id="sigle" value.bind="sigle"
-					placeholder="Abbréviation" required></input>
+						<label class="form-label" for="firstname">Prénom(s)</label>
+						<input class="form-control" type="text" id="firstname" value.bind="firstname"
+					placeholder="Prénom(s)" required></input>
 					</div>
 					<div class="form-group">
-						<label class="form-label" for="name">Nom</label>
-						<input class="form-control" type="text" id="name" value.bind="name" placeholder="Nom"></input>
+						<label class="form-label" for="email">Courriel</label>
+						<input class="form-control" type="email" id="email" value.bind="email" placeholder="Courriel"></input>
 					</div>
 					<div class="form-group">
-						<label class="form-label" for="description">Description</label>
+						<label class="form-label" for="phone">Téléphone</label>
+						<input class="form-control" type="tel" id="phone" value.bind="phone" placeholder="Téléphone"></input>
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="description">Remarques</label>
 						<textarea class="form-control" id="description" value.bind="description"></textarea>
 					</div>
 					<div class="btn-group">
-                     	 <button type="button" show.bind="canAdd" click.delegate="addNew()" class="btn btn-primary">Nouveau</button>
-                     	 <button type="button" show.bind="canCancel" click.delegate="cancel_add()" class="btn btn-primary">Annuler</button>
-                     	 <button type="button" show.bind="canSave" click.delegate="save()" class="btn btn-primary">Enregistrer</button>
-                    	  <button type="button" show.bind="canRemove" click.delegate="remove()" class="btn btn-primary">Supprimer</button>
-              	  </div>
+                     	<button type="button" show.bind="canAdd" click.delegate="addNew()" class="btn btn-primary">Nouveau</button>
+                      	<button type="button" show.bind="canCancel" click.delegate="cancel_add()" class="btn btn-primary">Annuler</button>
+                      	<button type="button" show.bind="canSave" click.delegate="save()" class="btn btn-primary">Enregistrer</button>
+                      	<button type="button" show.bind="canRemove" click.delegate="remove()" class="btn btn-primary">Supprimer</button>
+                	</div>
 				</form>
 			</div>
 		</div>

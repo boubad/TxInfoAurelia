@@ -1,4 +1,5 @@
 <template>
+	<section class="au-animate">
 	<h2>${title}</h2>
 	<div class="container" if.bind="isConnected">
 		<div>
@@ -70,7 +71,7 @@
 					</div>
 					<div class="form-group">
 						<label class="form-label" for="sigle">Abbréviation</label>
-						<input class="form-control" type="text" id="sigle" value.bind="sigle" 
+						<input class="form-control" type="text" id="sigle" value.bind="sigle"
 					placeholder="Abbréviation" required></input>
 					</div>
 					<div class="form-group">
@@ -91,4 +92,5 @@
 			</div>
 		</div>
 	</div>
+</section>
 </template>

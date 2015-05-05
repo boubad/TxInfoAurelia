@@ -72,10 +72,10 @@ export class ElementDesc implements IElementDesc {
             s.trim() : null;
     }
     public get text(): string {
-        if ((this._text === undefined) || (this._text === null)) {
-            this._text = this.toString();
+        if ((this._text !== undefined) && (this._text !== null)) {
+            return this._text;
         }
-        return this._text;
+        return this.toString();
     }
     public set text(s: string) {
         this._text = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?

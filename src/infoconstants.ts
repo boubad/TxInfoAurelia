@@ -45,3 +45,5 @@ export const UNITE_TYPE: string = 'unite';
 export const UNITE_PREFIX: string = 'UNT';
 export const GROUPEEVENT_TYPE: string = 'groupeevent';
 export const GROUPEEVENT_PREFIX: string = 'GVT';
+export const ADMINISTRATOR_TYPE: string = 'administrator';
+export const ADMINISTRATOR_PREFIX: string = 'ADM';

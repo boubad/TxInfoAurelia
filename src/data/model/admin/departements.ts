@@ -5,24 +5,22 @@ import {inject} from 'aurelia-framework';
 //
 import {IDepartement} from '../../../infodata.d';
 import {UserInfo} from '../userinfo';
-import {PagedViewModel} from './pagedviewmodel';
+import {SigleNameViewModel} from './siglenameviewmodel';
 import {Departement} from '../../domain/departement';
+import {InfoRoot} from '../../../inforoot';
 //
-export class Departements extends PagedViewModel<Departement> {
+export class Departements extends SigleNameViewModel<Departement> {
     static inject() { return [UserInfo]; }
     constructor(userinfo: UserInfo) {
-        super(userinfo, new Departement());
+        super(userinfo);
         this.title = 'Départements';
     }// constructor
+    protected initialize_data(): any {
+        return Promise.resolve(true);
+    }// initialize_data
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
         return (px !== null) && px.is_admin;
-    }// activate
-    public activate(params?: any, config?: any, instruction?: any): any {
-        let self = this;
-        return super.activate(params, config, instruction).then((r) => {
-            return self.refreshAll();
-        });
     }// activate
     protected create_item(): Departement {
         return new Departement();
@@ -38,8 +36,8 @@ export class Departements extends PagedViewModel<Departement> {
         }
         return false;
     }
+    public set canAdd(s: boolean) { }
     public refreshAll(): any {
-        this._add_mode = false;
         let userinfo = this.userInfo;
         let pPers = userinfo.person;
         if (pPers === null) {
@@ -51,7 +49,6 @@ export class Departements extends PagedViewModel<Departement> {
         this._data_ids = [];
         this._pages_count = 0;
         this._current_page = 0;
-        this._current_item = null;
         let self = this;
         userinfo.departements.then((dd) => {
             let ii: string[] = [];
@@ -78,32 +75,13 @@ export class Departements extends PagedViewModel<Departement> {
         }
         let self = this;
         this.items = [];
+        this.currentItem = null;
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
         userinfo.departements.then((dd: Departement[]) => {
-            self.items = dd;
-            let pSel = null;
-            if ((dd !== undefined) && (dd !== null)) {
-                if (oldid !== null) {
-                    let n = dd.length;
-                    for (let i = 0; i < n; ++i) {
-                        let x = dd[i];
-                        if (x.id == oldid) {
-                            pSel = x;
-                            break;
-                        }
-                    }// i
-                }// old
-            }
-            if ((pSel === null) && (self.items.length > 0)) {
-                pSel = self.items[0];
-            }
+            self.items = ((dd !== undefined) && (dd !== null)) ? dd : [];
+            let pSel = InfoRoot.sync_array(self.items, oldid);
             self.currentItem = pSel;
-            if (self.items.length < 1) {
-                self.addNew();
-            }
-            self._add_mode = false;
             return true;
         });
     }// refresh
 }// class Departements
-

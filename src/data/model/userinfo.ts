@@ -18,12 +18,6 @@ export class UserInfo {
     //
     private _pers: IPerson;
     private _service: IDataService;
-    private _dep: IDepartement;
-    private _an: IAnnee;
-    private _sem: ISemestre;
-    private _un: IUnite;
-    private _mat: IMatiere;
-    private _grp: IGroupe;
     //
     private _deps: IDepartement[];
     private _annees: IAnnee[];
@@ -36,6 +30,13 @@ export class UserInfo {
     //
     constructor(service:DataService) {
         this._service = service;
+        this._pers = null;
+        this._deps = null;
+        this._annees = null;
+        this._semestres = null;
+        this._unites = null;
+        this._matieres = null;
+        this._groupes = null;
     }// constructor
     public get dataService(): IDataService {
         if ((this._service === undefined) || (this._service === null)) {
@@ -48,13 +49,6 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(DEPARTEMENTID_KEY);
     }
     public set departementid(s: string) {
-        this._dep = null;
-        this._an = null;
-        this._sem = null;
-        this._un = null;
-        this._mat = null;
-        this._grp = null;
-        //
         this._annees = null;
         this._semestres = null;
         this._unites = null;
@@ -87,9 +81,7 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(ANNEEID_KEY);
     }
     public set anneeid(s: string) {
-        this._an = null;
         this._semestres = null;
-        this._sem = null;
         InfoRoot.sessionStore_remove(ANNEEID_KEY);
         InfoRoot.sessionStore_remove(SEMESTREID_KEY);
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
@@ -111,9 +103,7 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(UNITEID_KEY);
     }
     public set uniteid(s: string) {
-        this._un = null;
         this._matieres = null;
-        this._mat = null;
         InfoRoot.sessionStore_remove(UNITEID_KEY);
         InfoRoot.sessionStore_remove(MATIEREID_KEY);
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
@@ -135,7 +125,6 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(SEMESTREID_KEY);
     }
     public set semestreid(s: string) {
-        this._sem = null;
         InfoRoot.sessionStore_remove(SEMESTREID_KEY);
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
             let self = this;
@@ -156,7 +145,6 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(MATIEREID_KEY);
     }
     public set matiereid(s: string) {
-        this._mat = null;
         InfoRoot.sessionStore_remove(MATIEREID_KEY);
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
             let self = this;
@@ -177,7 +165,6 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(GROUPEID_KEY);
     }
     public set groupeid(s: string) {
-        this._grp = null;
         InfoRoot.sessionStore_remove(GROUPEID_KEY);
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
             let self = this;
@@ -418,96 +405,6 @@ export class UserInfo {
             }
         }
     }// get groupes
-    public get departement(): Promise<IDepartement> {
-        if ((this._dep !== undefined) && (this._dep !== null) && (this._dep.id !== null)) {
-            return Promise.resolve(this._dep);
-        }
-        this._dep = null;
-        let id: string = this.departementid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: IDepartement) => {
-            self._dep = d;
-            return self._dep;
-        })
-    }//get departement
-    public get annee(): Promise<IAnnee> {
-        if ((this._an !== undefined) && (this._an !== null) && (this._an.id !== null)) {
-            return Promise.resolve(this._an);
-        }
-        this._an = null;
-        let id: string = this.anneeid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: IAnnee) => {
-            self._an = d;
-            return self._an;
-        })
-    }//get annee
-    public get semestre(): Promise<ISemestre> {
-        if ((this._sem !== undefined) && (this._sem !== null) && (this._sem.id !== null)) {
-            return Promise.resolve(this._sem);
-        }
-        this._sem = null;
-        let id: string = this.semestreid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: ISemestre) => {
-            self._sem = d;
-            return self._sem;
-        })
-    }//get semestre
-    public get unite(): Promise<IUnite> {
-        if ((this._un !== undefined) && (this._un !== null) && (this._un.id !== null)) {
-            return Promise.resolve(this._un);
-        }
-        this._un = null;
-        let id: string = this.uniteid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: IUnite) => {
-            self._un = d;
-            return self._un;
-        })
-    }//get unite
-    public get matiere(): Promise<IMatiere> {
-        if ((this._mat !== undefined) && (this._mat !== null) && (this._mat.id !== null)) {
-            return Promise.resolve(this._mat);
-        }
-        this._mat = null;
-        let id: string = this.matiereid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: IMatiere) => {
-            self._mat = d;
-            return self._mat;
-        })
-    }//get amtiere
-    public get groupe(): Promise<IGroupe> {
-        if ((this._grp !== undefined) && (this._grp !== null) && (this._grp.id !== null)) {
-            return Promise.resolve(this._grp);
-        }
-        this._grp = null;
-        let id: string = this.groupeid;
-        if (id === null) {
-            return Promise.resolve(null);
-        }
-        let self = this;
-        return this.dataService.find_item_by_id(id).then((d: IGroupe) => {
-            self._grp = d;
-            return self._grp;
-        })
-    }//get groupe
     public get person(): IPerson {
         if ((this._pers !== undefined) && (this._pers !== null) && (this._pers.id !== null)) {
             return this._pers;
@@ -533,12 +430,6 @@ export class UserInfo {
     }// get person
     public set person(pPers: IPerson) {
         this._pers = null;
-        this._dep = null;
-        this._an = null;
-        this._sem = null;
-        this._un = null;
-        this._mat = null;
-        this._grp = null;
         this._deps = null;
         this._annees = null;
         this._semestres = null;
