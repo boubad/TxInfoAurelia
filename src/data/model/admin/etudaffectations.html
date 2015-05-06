@@ -1,0 +1,107 @@
+<template>
+	<h2>${title}</h2>
+	<div class="container" if.bind="isConnected">
+		<div>
+			<div class="row">
+				<div class="col-md-4 col-sm-4 col-xs-4">&nbsp;</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+						${fullname}
+				</div>
+				<div class="col-md-1 col-sm-1 col-xs-1">
+					<img show.bind="hasPhoto" src.bind="photoUrl" height="48"></img>
+				</div>
+			</div>
+		</div>
+		<h3 show.bind = "hasErrorMessage" class="text-danger">${errorMessage}</h3>
+		<h3 show.bind = "hasInfoMessage" class="text-success">${infoMessage}</h3>
+		<form role="forom">
+			<div class="row">
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="departements">Département</label>
+						<select id="departements" value.bind="departement">
+							<option>Département.</option>
+							<option repeat.for="depelem of departements" model.bind="depelem">${depelem.text}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="annees">Année</label>
+						<select id="annees" value.bind="annee">
+							<option>Anneé.</option>
+							<option repeat.for="anelem of annees" model.bind="anelem">${anelem.text}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="semestres">Semestre</label>
+						<select id="semestres" value.bind="semestre">
+							<option>Semestre.</option>
+							<option repeat.for="semelem of semestres" model.bind="semelem">${semelem.text}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<div class="form-group">
+						<label class="form-label" for="groupes">Groupe</label>
+						<select id="groupes" value.bind="groupe">
+							<option>Groupe.</option>
+							<option repeat.for="grpelem of groupes" model.bind="grpelem">${grpelem.text}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="row">
+			<div class="col-md-4 col-sm-4 col-xs-4 form-group">
+				<div class="form-group">
+					<label class="form-label" for="persons">Etudiants</label>
+					<select id="persons" multiple value.bind="currentPersons" size="16">
+					<option repeat.for="pers of persons" model.bind="pers">${pers.text}</option>
+				</select>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4 col-xs-4">
+				<div>
+					<button type="button" click.delegate="refreshAll()" class="btn btn-primary">Rafraîchir</button>
+				</div>
+				<div class="form-group">
+						<label class="form-label" for="startDate">Date de début</label>
+						<input class="form-control" type="date" id="startDate" value.bind="allStartDate" min.bind="minDate" max.bind="maxDate" required></input>
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="endDate">Date de fin</label>
+						<input class="form-control" type="date" id="endDate" value.bind="allEndDate" min.bind="minDate" max.bind="maxDate" required></input>
+					</div>
+					<div class="btn-group">
+                     	 <button type="button" disabled.bind="cannotSave" click.delegate="save()" class="btn btn-primary">Ajouter</button>
+                    	  <button type="button" disabled.bind="cannotRemove" click.delegate="remove()" class="btn btn-primary">Supprimer</button>
+              	  </div>
+			</div>
+			<div class="col-md-4 col-sm-4 col-xs-4" if.bind="hasItems">
+				<ul class="pagination" if.bind="hasPages">
+					<li>
+						<a href="#" click.delegate="firstPage()" show.bind="canPrevPage">Début</a>
+					</li>
+					<li>
+						<a href="#" click.delegate="prevPage()" show.bind="canPrevPage">Préc.</a>
+					</li>
+					<li>
+						<a href="#" click.delegate="nextPage()" show.bind="canNextPage">Suivant</a>
+					</li>
+					<li>
+						<a href="#" click.delegate="lastPage()" show.bind="canNextPage">Fin</a>
+					</li>
+				</ul>
+				<div class="form-group">
+					<label class="form-label" for="affectations">Affectations</label>
+					<select id="affectations" multiple value.bind="currentAffectations" size="16">
+					<option repeat.for="elem of items" model.bind="elem">${elem.text}</option>
+				</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

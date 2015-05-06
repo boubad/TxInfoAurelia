@@ -12,24 +12,24 @@ interface MyProgressEvent extends ProgressEvent {
 //
 export class FileDesc implements IFileDesc {
     //
-    private _filename: string;
-    private _filetype: string;
-    private _filedata: Blob;
-    private _dataurl: string;
+    private _filename: string = null;
+    private _filetype: string = null;
+    private _filedata: Blob = null;
+    private _dataurl: string = null;
     //
     constructor() {
     }// constructor
     public get name(): string {
-        return (this._filename !== undefined) ? this._filename : null;
+        return this._filename;
     }
     public get type(): string {
-        return (this._filetype !== undefined) ? this._filetype : null;
+        return this._filetype;
     }
     public get data(): Blob {
-        return (this._filedata !== undefined) ? this._filedata : null;
+        return this._filedata;
     }
     public get url(): string {
-        return (this._dataurl !== undefined) ? this._dataurl : null;
+        return this._dataurl;
     }
     public get is_storeable(): boolean {
         return (this.name !== null) && (this.type !== null) && (this.data !== null);

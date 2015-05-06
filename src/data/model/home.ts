@@ -1,14 +1,14 @@
 //home.ts
 //
-/// <reference path='../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
 //
 import {inject} from 'aurelia-framework';
 //
 //
-import {IDataService, IPerson, IElementDesc} from './infodata.d';
-import {BaseViewModel} from './data/model/baseviewmodel';
-import {InfoRoot} from './inforoot';
-import {UserInfo} from './data/model/userinfo';
+import {IDataService, IPerson, IElementDesc} from '../../infodata.d';
+import {BaseViewModel} from './baseviewmodel';
+import {InfoRoot} from '../../inforoot';
+import {UserInfo} from './userinfo';
 //
 export class Home extends BaseViewModel {
     public username: string;
@@ -63,9 +63,4 @@ export class Home extends BaseViewModel {
             self.set_error(err);
         });
     }// canConnect
-    public disconnect(): any {
-        if (InfoRoot.confirm('Voulez-vous vraiment quitter?')) {
-            this.userInfo.person = null;
-        }
-    }// disconnect
 }// class Home

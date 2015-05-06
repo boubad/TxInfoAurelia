@@ -6,12 +6,12 @@ import {InfoRoot} from '../../inforoot';
 //
 export class WorkItem extends DepartementPerson
     implements IWorkItem {
-    private _annee: string;
-    private _sem: string;
-    private _groupe: string;
-    private _date: Date;
-    public _status: string;
-    public _genre: string;
+    private _annee: string = null;
+    private _sem: string = null;
+    private _groupe: string = null;
+    private _date: Date = null;
+    public _status: string = null;
+    public _genre: string = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -37,41 +37,41 @@ export class WorkItem extends DepartementPerson
         } // oMap
     } // constructor
     public get eventDate(): Date {
-        return (this._date !== undefined) ? this._date : null;
+        return this._date;
     }
     public set eventDate(d: Date) {
         this._date = InfoRoot.check_date(d);
     }
     public get anneeid(): string {
-        return (this._annee !== undefined) ? this._annee : null;
+        return this._annee;
     }
     public set anneeid(s: string) {
         this._annee = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get semestreid(): string {
-        return (this._sem !== undefined) ? this._sem : null;
+        return this._sem;
     }
     public set semestreid(s: string) {
         this._sem = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get groupeid(): string {
-        return (this._groupe !== undefined) ? this._groupe : null;
+        return this._groupe;
     }
     public set groupeid(s: string) {
         this._groupe = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get genre(): string {
-        return (this._genre !== undefined) ? this._genre : null;
+        return this._genre;
     }
     public set genre(s: string) {
         this._sem = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim().toUpperCase() : null;
     }
     public get status(): string {
-        return (this._status !== undefined) ? this._status : null;
+        return this._status;
     }
     public set status(s: string) {
         this._status = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?

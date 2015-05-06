@@ -49,7 +49,7 @@ export class ItemFactory implements IItemFactory {
             return new Matiere(oMap);
         } else if (t == ETUDIANTPERSON_KEY) {
             return new EtudiantPerson(oMap);
-        } else if (t == ETUDEVENT_TYPE) {
+        } else if (t == ETUDIANT_TYPE) {
             return new Etudiant(oMap);
         } else if (t == ENSEIGNANT_TYPE) {
             return new Enseignant(oMap);

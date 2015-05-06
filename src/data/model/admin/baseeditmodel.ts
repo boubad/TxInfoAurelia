@@ -68,6 +68,11 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         this._groupe = null;
     }// constructor
     //
+    public canActivate(params?: any, config?: any, instruction?: any): any {
+        let px = this.userInfo.person;
+        return (px !== null) && px.is_admin;
+    }// activate
+    //
     public activate(params?: any, config?: any, instruction?: any): any {
         let self = this;
         if ((this._item_model === undefined) || (this._item_model === null)) {
@@ -95,63 +100,13 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         return null;
     }
     protected post_change_departement(): Promise<any> {
-        this._unites = null;
-        this._unite = null;
-        this._groupes = null;
-        this._groupe = null;
-        this._annees = null;
-        this._annee = null;
-        this._semestres = null;
-        this._semestre = null;
-        this._matieres = null;
-        this._matiere = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        return userinfo.annees.then((aa) => {
-            self._annees = ((aa !== undefined) && (aa !== null)) ? aa : [];
-            let id = self.userInfo.anneeid;
-            let p = InfoRoot.sync_array(self.annees, id);
-            self.annee = p;
-            return userinfo.unites;
-        }).then((uu) => {
-            self._unites = ((uu !== undefined) && (uu !== null)) ? uu : [];
-            let id = self.userInfo.uniteid;
-            let p = InfoRoot.sync_array(self.unites, id);
-            self.unite = p;
-            return userinfo.groupes;
-        }).then((gg) => {
-            self._groupes = ((gg !== undefined) && (gg !== null)) ? gg : [];
-            let id = self.userInfo.groupeid;
-            let p = InfoRoot.sync_array(self.groupes, id);
-            self.groupe = p;
-            return true;
-        });
+        return Promise.resolve(true);
     }
     protected post_change_unite(): Promise<any> {
-        this._matieres = null;
-        this._matiere = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        return userinfo.matieres.then((mm) => {
-            self._matieres = ((mm !== undefined) && (mm !== null)) ? mm : [];
-            let id = self.userInfo.matiereid;
-            let p = InfoRoot.sync_array(self.matieres, id);
-            self.matiere = p;
-            return true;
-        });
+        return Promise.resolve(true);
     }
     protected post_change_annee(): Promise<any> {
-        this._semestres = null;
-        this._semestre = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        return userinfo.semestres.then((mm) => {
-            self._semestres = ((mm !== undefined) && (mm !== null)) ? mm : [];
-            let id = self.userInfo.semestreid;
-            let p = InfoRoot.sync_array(self.semestres, id);
-            self.semestre = p;
-            return true;
-        });
+        return Promise.resolve(true);
     }
     protected post_change_groupe(): Promise<any> {
         return Promise.resolve(true);
@@ -172,10 +127,29 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set departement(s: IDepartement) {
         this._departement = (s !== undefined) ? s : null;
         let id = (this.departement !== null) ? this.departement.id : null;
-        if (this.userInfo.departementid !== id) {
-            this.userInfo.departementid = id;
-            this.post_change_departement();
-        }
+        this.userInfo.departementid = id;
+        this._unites = null;
+        this._unite = null;
+        this._groupes = null;
+        this._groupe = null;
+        this._annees = null;
+        this._annee = null;
+        this._semestres = null;
+        this._semestre = null;
+        this._matieres = null;
+        this._matiere = null;
+        let self = this;
+        let userinfo = this.userInfo;
+        userinfo.annees.then((aa) => {
+            self._annees = ((aa !== undefined) && (aa !== null)) ? aa : [];
+            return userinfo.unites;
+        }).then((uu) => {
+            self._unites = ((uu !== undefined) && (uu !== null)) ? uu : [];
+            return userinfo.groupes;
+        }).then((gg) => {
+            self._groupes = ((gg !== undefined) && (gg !== null)) ? gg : [];
+            return self.post_change_departement();
+        });
     }
     public get departementid(): string {
         return (this.departement !== null) ? this.departement.id : null;
@@ -190,10 +164,15 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set annee(s: IAnnee) {
         this._annee = (s !== undefined) ? s : null;
         let id = (this.annee !== null) ? this.annee.id : null;
-        if (this.userInfo.anneeid !== id) {
-            this.userInfo.anneeid = id;
-            this.post_change_annee();
-        }
+        this.userInfo.anneeid = id;
+        this._semestres = null;
+        this._semestre = null;
+        let self = this;
+        let userinfo = this.userInfo;
+        userinfo.semestres.then((mm) => {
+            self._semestres = ((mm !== undefined) && (mm !== null)) ? mm : [];
+            return self.post_change_annee();
+        });
     }
     public get anneeid(): string {
         return (this.annee !== null) ? this.annee.id : null;
@@ -208,10 +187,15 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set unite(s: IUnite) {
         this._unite = (s !== undefined) ? s : null;
         let id = (this.unite !== null) ? this.unite.id : null;
-        if (this.userInfo.uniteid !== id) {
-            this.userInfo.uniteid = id;
-            this.post_change_unite();
-        }
+        this.userInfo.uniteid = id;
+        this._matieres = null;
+        this._matiere = null;
+        let self = this;
+        let userinfo = this.userInfo;
+        userinfo.matieres.then((mm) => {
+            self._matieres = ((mm !== undefined) && (mm !== null)) ? mm : [];
+            return self.post_change_unite();
+        });
     }
     public get uniteid(): string {
         return (this.unite !== null) ? this.unite.id : null;
@@ -226,10 +210,8 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set semestre(s: ISemestre) {
         this._semestre = (s !== undefined) ? s : null;
         let id = (this.semestre !== null) ? this.semestre.id : null;
-        if (this.userInfo.semestreid !== id) {
-            this.userInfo.semestreid = id;
-            this.post_change_semestre();
-        }
+        this.userInfo.semestreid = id;
+        this.post_change_semestre();
     }
     public get semestreid(): string {
         return (this.semestre !== null) ? this.semestre.id : null;
@@ -244,10 +226,8 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set groupe(s: IGroupe) {
         this._groupe = (s !== undefined) ? s : null;
         let id = (this.groupe !== null) ? this.groupe.id : null;
-        if (this.userInfo.groupeid !== id) {
-            this.userInfo.groupeid = id;
-            this.post_change_groupe();
-        }
+        this.userInfo.groupeid = id;
+        this.post_change_groupe();
     }
     public get groupeid(): string {
         return (this.groupe !== null) ? this.groupe.id : null;
@@ -262,10 +242,8 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     public set matiere(s: IMatiere) {
         this._matiere = (s !== undefined) ? s : null;
         let id = (this.matiere !== null) ? this.matiere.id : null;
-        if (this.userInfo.matiereid !== id) {
-            this.userInfo.matiereid = id;
-            this.post_change_matiere();
-        }
+        this.userInfo.matiereid = id;
+        this.post_change_matiere();
     }
     public get matiereid(): string {
         return (this.matiere !== null) ? this.matiere.id : null;
@@ -277,7 +255,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         if (p === null) {
             return Promise.resolve(true);
         }
-        let id = p.avatarid;
+        let id = p.avatardocid();
         let avatarid = p.avatarid;
         if ((id === null) || (avatarid === null)) {
             return Promise.resolve(true);
@@ -369,6 +347,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
             }).then((x) => {
                 old.avatarid = null;
                 self.currentItem = old;
+                self.fileDesc.clear();
                 self.infoMessage = 'Avatar supprimé.';
             }).catch((err) => {
                 self.set_error(err);
@@ -401,7 +380,10 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
             p.avatarid = avatarid;
             return service.maintains_item(p);
         }).then((px) => {
+            self.fileDesc.clear();
             self.infoMessage = 'Avatar modifié.';
+        }).catch((err) => {
+            self.set_error(err);
         });
     }// saveAvatar
     public get canAdd(): boolean {
@@ -445,12 +427,13 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
     }
     public set currentItem(s: T) {
         this._current_item = s;
+        this.fileDesc.clear();
         this.post_change_item();
     }
-    public refresh(): any {
+    public refresh(): Promise<any> {
         let model = this.modelItem;
         if (model === null) {
-            return false;
+            return Promise.resolve(false);
         }
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
         if ((this.items === undefined) || (this.items === null)) {
@@ -464,8 +447,8 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
                     elem.url = null;
                 }
             }// elem
-            this.items = [];
         }
+        this.items = [];
         this.currentItem = null;
         let startKey = null;
         let endKey = null;
@@ -483,21 +466,34 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         }
         if ((startKey === null) || (endKey === null)) {
             this.addNew();
-            return true;
+            return Promise.resolve(true);
         }
         this.clear_error();
         var self = this;
+        // console.log('REFRESH STARTKEY: ' + startKey + " ENDKEY: " + endKey);
         return this.dataService.get_items(model, startKey, endKey).then((rr) => {
+            let rx = ((rr !== undefined) && (rr !== null)) ? rr : [];
+            //    console.log('LENGTH 0: ' + rx.length);
             self._add_mode = false;
             if (self.hasAvatars) {
-                return self.retrieve_avatars(rr);
+                return self.retrieve_avatars(rx);
             } else {
-                return rr;
+                return rx;
             }
         }).then((dd: T[]) => {
             self.items = ((dd !== undefined) && (dd !== null)) ? dd : [];
+            //  console.log('LENGTH: ' + self.items.length);
             let pSel = InfoRoot.sync_array(self.items, oldid);
             self.currentItem = pSel;
+            /*
+                if (pSel !== null){
+                let oMap: any = {};
+                pSel.to_map(oMap);
+                console.log('SELECTED: ' + JSON.stringify(oMap));
+                } else {
+                    console.log('SELECTED: NULL');
+                }
+                */
             return true;
         });
     }// refresh
@@ -508,20 +504,21 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         }
         return sRet;
     }
-    public refreshAll(): any {
+    public refreshAll(): Promise<any> {
         this._data_ids = [];
         this._pages_count = 0;
         this._current_page = 0;
         this._current_item = null;
         let model = this.modelItem;
         if (model === null) {
-            return;
+            return Promise.resolve(false);
         }
         this._data_ids = [];
         let startKey = model.start_key();
         let endKey = model.end_key();
         let nc = this._page_size;
         let self = this;
+        // console.log('REFRESH_ALL STARTKEY: ' + startKey + " ENDKEY: " + endKey);
         return this.dataService.get_ids(startKey, endKey).then((ids) => {
             if ((ids !== undefined) && (ids !== null)) {
                 self._data_ids = ids;

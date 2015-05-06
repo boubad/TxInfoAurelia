@@ -16,17 +16,4 @@ export class Administrator extends DepartementPerson implements IAdministrator {
     public base_prefix(): string {
         return ADMINISTRATOR_PREFIX;
     }
-    public update_person(pPers: IPerson): void {
-        if ((pPers !== undefined) && (pPers !== null)) {
-            super.update_person(pPers);
-            if (!pPers.is_admin) {
-                let x: string[] = pPers.roles;
-                if (x === null) {
-                    x = [];
-                }
-                x.push(ROLE_ADMIN);
-                pPers.roles = x;
-            }
-        }// pPers
-    }// update_person
 }// class Enseignant

@@ -5,7 +5,7 @@ import { IntervalItem} from "./intervalitem";
 import {SEMESTRE_TYPE, SEMESTRE_PREFIX} from '../../infoconstants';
 //
 export class Semestre extends IntervalItem implements ISemestre {
-    public _anneeid: string;
+    public _anneeid: string = null;
     constructor(oMap?: any) {
         super(oMap);
         if ((oMap != undefined) && (oMap != null)) {
@@ -15,7 +15,7 @@ export class Semestre extends IntervalItem implements ISemestre {
         } // oMap
     } // constructor
     public get anneeid(): string {
-        return (this._anneeid !== undefined) ? this._anneeid : null;
+        return this._anneeid;
     }
     public set anneeid(s: string) {
         this._anneeid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?

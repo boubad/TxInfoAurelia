@@ -26,9 +26,9 @@ export class UserInfo {
     private _matieres: IMatiere[];
     private _groupes: IGroupe[];
     //
-    static inject(){ return [DataService];}
+    static inject() { return [DataService]; }
     //
-    constructor(service:DataService) {
+    constructor(service: DataService) {
         this._service = service;
         this._pers = null;
         this._deps = null;
@@ -49,149 +49,65 @@ export class UserInfo {
         return InfoRoot.sessionStore_get(DEPARTEMENTID_KEY);
     }
     public set departementid(s: string) {
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
         this._annees = null;
-        this._semestres = null;
         this._unites = null;
-        this._matieres = null;
         this._groupes = null;
-        //
-        InfoRoot.sessionStore_remove(DEPARTEMENTID_KEY);
         InfoRoot.sessionStore_remove(ANNEEID_KEY);
         InfoRoot.sessionStore_remove(UNITEID_KEY);
-        InfoRoot.sessionStore_remove(MATIEREID_KEY);
-        InfoRoot.sessionStore_remove(SEMESTREID_KEY);
         InfoRoot.sessionStore_remove(GROUPEID_KEY);
-        //
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.departements.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(DEPARTEMENTID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
+        InfoRoot.sessionStore_set(DEPARTEMENTID_KEY, id);
     }
     public get anneeid(): string {
         return InfoRoot.sessionStore_get(ANNEEID_KEY);
     }
     public set anneeid(s: string) {
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
         this._semestres = null;
-        InfoRoot.sessionStore_remove(ANNEEID_KEY);
+        InfoRoot.sessionStore_set(ANNEEID_KEY, id);
         InfoRoot.sessionStore_remove(SEMESTREID_KEY);
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.annees.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(ANNEEID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
     }
     public get uniteid(): string {
         return InfoRoot.sessionStore_get(UNITEID_KEY);
     }
     public set uniteid(s: string) {
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
         this._matieres = null;
-        InfoRoot.sessionStore_remove(UNITEID_KEY);
         InfoRoot.sessionStore_remove(MATIEREID_KEY);
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.unites.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(UNITEID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
+        InfoRoot.sessionStore_set(UNITEID_KEY, id);
     }
     public get semestreid(): string {
         return InfoRoot.sessionStore_get(SEMESTREID_KEY);
     }
     public set semestreid(s: string) {
-        InfoRoot.sessionStore_remove(SEMESTREID_KEY);
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.semestres.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(SEMESTREID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
+        InfoRoot.sessionStore_set(SEMESTREID_KEY, s);
     }
     public get matiereid(): string {
         return InfoRoot.sessionStore_get(MATIEREID_KEY);
     }
     public set matiereid(s: string) {
-        InfoRoot.sessionStore_remove(MATIEREID_KEY);
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.matieres.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(MATIEREID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
+        InfoRoot.sessionStore_set(MATIEREID_KEY, s);
     }
     public get groupeid(): string {
         return InfoRoot.sessionStore_get(GROUPEID_KEY);
     }
     public set groupeid(s: string) {
-        InfoRoot.sessionStore_remove(GROUPEID_KEY);
-        if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
-            let self = this;
-            this.groupes.then((dd) => {
-                if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                    for (let i = 0; i < dd.length; ++i) {
-                        let x = dd[i];
-                        if (x.id == s) {
-                            InfoRoot.sessionStore_set(GROUPEID_KEY, s);
-                            break;
-                        }
-                    }// i
-                }
-            });
-        }// s
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
+        InfoRoot.sessionStore_set(GROUPEID_KEY, id);
     }
     public get enseignantid(): string {
         return InfoRoot.sessionStore_get(ENSEIGNANTID_KEY);
     }
     public set enseignantid(s: string) {
-        InfoRoot.sessionStore_set(ENSEIGNANTID_KEY, s);
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
+        InfoRoot.sessionStore_set(ENSEIGNANTID_KEY, id);
     }
     public get etudiantid(): string {
         return InfoRoot.sessionStore_get(ETUDIANTID_KEY);
     }
     public set etudiantid(s: string) {
-        InfoRoot.sessionStore_set(ETUDIANTID_KEY, s);
+        let id = ((s !== undefined) && (s !== null)) ? s : null;
+        InfoRoot.sessionStore_set(ETUDIANTID_KEY, id);
     }
     public get departements(): Promise<IDepartement[]> {
         if ((this._deps !== undefined) && (this._deps !== null)) {

@@ -4,13 +4,13 @@ import {IElementDesc} from '../../infodata.d';
 //
 export class ElementDesc implements IElementDesc {
     //
-    private _id: string;
-    private _text: string;
-    private _rev: string;
-    private _avatarid: string;
-    private _url: string;
-    private _selected: boolean;
-    private _description: string;
+    private _id: string = null;
+    private _text: string = null;
+    private _rev: string = null;
+    private _avatarid: string = null;
+    private _url: string = null;
+    private _selected: boolean = false;
+    private _description: string = null;
     //
     constructor(oMap?: any) {
         if ((oMap !== undefined) && (oMap !== null)) {
@@ -58,14 +58,14 @@ export class ElementDesc implements IElementDesc {
         return true;
     }
     public get id(): string {
-        return (this._id !== undefined) ? this._id : null;
+        return this._id;
     }
     public set id(s: string) {
         this._id = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get rev(): string {
-        return (this._rev !== undefined) ? this._rev : null;
+        return this._rev;
     }
     public set rev(s: string) {
         this._rev = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
@@ -82,31 +82,31 @@ export class ElementDesc implements IElementDesc {
             s.trim() : null;
     }
     public get avatarid(): string {
-        return (this._avatarid !== undefined) ? this._avatarid : null;
+        return this._avatarid;
     }
     public set avatarid(s: string) {
         this._avatarid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get url(): string {
-        return (this._url !== undefined) ? this._url : null;
+        return this._url;
     }
     public set url(s: string) {
         this._url = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get description(): string {
-        return (this._description !== undefined) ? this._description : null;
+        return this._description;
     }
     public set description(s: string) {
         this._description = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get isSelected(): boolean {
-        return ((this._selected !== undefined) && (this._selected !== null)) ? this._selected : false;
+        return this._selected;
     }
     public set isSelected(s: boolean) {
-        this._selected = s;
+        this._selected = ((s !== undefined) && (s !== null)) ? s : false;
     }
     public sort_func(p1: IElementDesc, p2: IElementDesc): number {
         let s1 = p1.text;

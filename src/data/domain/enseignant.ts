@@ -19,14 +19,6 @@ export class Enseignant extends DepartementPerson implements IEnseignant {
     public update_person(pPers: IPerson): void {
         if ((pPers !== undefined) && (pPers !== null)) {
             super.update_person(pPers);
-            if (!pPers.is_prof) {
-                let x: string[] = pPers.roles;
-                if (x === null) {
-                    x = [];
-                }
-                x.push(ROLE_PROF);
-                pPers.roles = x;
-            }
             let cont: string[] = pPers.enseignantids;
             if (cont === null) {
                 cont = [];

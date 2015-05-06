@@ -5,52 +5,52 @@ import {IAttachedDoc} from '../../infodata.d';
 //
 export class AttachedDoc implements IAttachedDoc {
     //
-    private _id: string;
-    private _name: string;
-    private _mime_type: string;
-    private _data: Blob;
-    private _description: string;
-    private _keywords: string[];
+    private _id: string = null;
+    private _name: string = null;
+    private _mime_type: string = null;
+    private _data: Blob = null;
+    private _description: string = null;
+    private _keywords: string[] = null;
     //
     constructor(oMap?: any) {
 
     }// constructor
     public get id(): string {
-        return (this._id !== undefined) ? this._id : null;
+        return this._id;
     }
     public set id(s: string) {
         this._id = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get name(): string {
-        return (this._name !== undefined) ? this._name : null;
+        return this._name;
     }
     public set name(s: string) {
         this._name = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get mime_type(): string {
-        return (this._mime_type !== undefined) ? this._mime_type : null;
+        return this._mime_type;
     }
     public set mime_type(s: string) {
         this._mime_type = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get data(): Blob {
-        return (this._data !== undefined) ? this._data : null;
+        return this._data;
     }
     public set data(s: Blob) {
         this._data = (s !== undefined) ? s : null;
     }
     public get description(): string {
-        return (this._description !== undefined) ? this._description : null;
+        return this._description;
     }
     public set description(s: string) {
         this._description = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get keywords(): string[] {
-        return (this._keywords !== undefined) ? this._keywords : null;
+        return this._keywords;
     }
     public set keywords(s: string[]) {
         this._keywords = ((s !== undefined) && (s !== null) && (s.length > 0)) ?

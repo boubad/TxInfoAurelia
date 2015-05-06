@@ -6,15 +6,15 @@ import {InfoRoot} from '../../inforoot';
 import {ETUDIANTPERSON_KEY} from '../../infoconstants';
 //
 export class EtudiantPerson extends Person implements IEtudiantPerson {
-    private _dossier: string;
-    private _sexe: string;
-    private _date: Date;
-    private _ville: string;
-    private _etablissement: string;
-    private _seriebac: string;
-    private _optionbac: string;
-    private _mentionbac: string;
-    private _sup: string;
+    private _dossier: string = null;
+    private _sexe: string = null;
+    private _date: Date = null;
+    private _ville: string = null;
+    private _etablissement: string = null;
+    private _seriebac: string = null;
+    private _optionbac: string = null;
+    private _mentionbac: string = null;
+    private _sup: string = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -54,21 +54,21 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get birthDate(): Date {
-        return (this._date !== undefined) ? this._date : null;
+        return this._date;
     }
     public set birthDate(s: Date) {
         this._date = InfoRoot.check_date(s);
     }
     //
     public get dossier(): string {
-        return (this._dossier !== undefined) ? this.dossier : null;
+        return this._dossier;
     }
     public set dossier(s: string) {
         this._dossier = ((s !== undefined) &&
             (s !== null) && (s.trim().length > 0)) ? s.trim().toUpperCase() : null;
     }
     public get sexe(): string {
-        return (this._sexe !== undefined) ? this._sexe : null;
+        return this._sexe;
     }
     public set sexe(s) {
         this._sexe = ((s !== undefined) &&
@@ -93,7 +93,7 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get ville(): string {
-        return (this._ville !== undefined) ? this.ville : null;
+        return this._ville;
     }
     public set ville(s: string) {
         this._ville = ((s !== undefined) &&
@@ -101,7 +101,7 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get etablissement(): string {
-        return (this._etablissement !== undefined) ? this._etablissement : null;
+        return this._etablissement;
     }
     public set etablissement(s: string) {
         this._etablissement = ((s !== undefined) &&
@@ -109,7 +109,7 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get serieBac(): string {
-        return (this._seriebac !== undefined) ? this._seriebac : null;
+        return this._seriebac;
     }
     public set serieBac(s: string) {
         this._seriebac = ((s !== undefined) &&
@@ -117,14 +117,14 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get optionBac(): string {
-        return (this._optionbac !== undefined) ? this._optionbac : null;
+        return  this._optionbac;
     }
     public set optionBac(s: string) {
         this._optionbac = ((s !== undefined) &&
             (s != null) && (s.trim().length > 0)) ? s.trim().toUpperCase() : null;
     }
     public get mentionBac(): string {
-        return (this._mentionbac !== undefined) ? this._mentionbac : null;
+        return this._mentionbac;
     }
     public set mentionBac(s: string) {
         this._mentionbac = ((s !== undefined) &&
@@ -132,7 +132,7 @@ export class EtudiantPerson extends Person implements IEtudiantPerson {
     }
     //
     public get etudesSuperieures(): string {
-        return (this._sup !== undefined) ? this._sup : null;
+        return this._sup;
     }
     public set etudesSuperieures(s: string) {
         this._sup = ((s !== undefined) &&

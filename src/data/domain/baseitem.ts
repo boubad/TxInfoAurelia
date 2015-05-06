@@ -6,8 +6,8 @@ import {ElementDesc} from './elementdesc';
 //
 export class BaseItem extends ElementDesc implements IBaseItem {
     //
-    private _attachments: any;
-    private _attachedDocs: IAttachedDoc[];
+    private _attachments: any = null;
+    private _attachedDocs: IAttachedDoc[] = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -21,21 +21,20 @@ export class BaseItem extends ElementDesc implements IBaseItem {
         }// oMap
     }// constructor
     public get attachments(): any {
-        return (this._attachments !== undefined) ? this._attachments : null;
+        return this._attachments;
     }
     public set attachments(s: any) {
         this._attachments = (s !== undefined) ? s : null;
     }
     public get attachedDocs(): IAttachedDoc[] {
-        return (this._attachedDocs !== undefined) ? this._attachedDocs : null;
+        return this._attachedDocs;
     }
     public set attachedDocs(s: IAttachedDoc[]) {
-        this._attachedDocs = ((s !== undefined) && (s !== null) && (s.length > 0)) ? s : null;
+        this._attachedDocs = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public is_storeable(): boolean {
-        return super.is_storeable() && (this.type() !== null) && (this.base_prefix() !== null) &&
-            (this.create_id() !== null);
+        return super.is_storeable() && (this.type() !== null) && (this.base_prefix() !== null);
     }
     public to_map(oMap: any): void {
         super.to_map(oMap);

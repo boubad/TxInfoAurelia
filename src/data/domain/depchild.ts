@@ -5,7 +5,7 @@ import {BaseItem} from './baseitem';
 //
 export class DepartementChildItem extends BaseItem
     implements IDepartementChildItem {
-    private _departementid: string;
+    private _departementid: string = null;
     constructor(oMap?: any) {
         super(oMap);
         if ((oMap !== undefined) && (oMap !== null)) {
@@ -15,7 +15,7 @@ export class DepartementChildItem extends BaseItem
         } // oMap
     } // constructor
     public get departementid(): string {
-        return (this._departementid !== undefined) ? this._departementid : null;
+        return this._departementid;
     }
     public set departementid(s: string) {
         this._departementid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?

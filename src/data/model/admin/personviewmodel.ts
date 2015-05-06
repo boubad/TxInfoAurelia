@@ -130,9 +130,6 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
         if (!pPers.is_storeable()) {
             return;
         }
-        if (pPers.id === null) {
-            pPers.id = pPers.create_id();
-        }
         let item = this.currentItem;
         if (item === null) {
             item = this.create_item();
@@ -140,8 +137,17 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
                 return;
             }
         }
+        if (pPers.id === null) {
+            pPers.id = pPers.create_id();
+        }
+        item.lastname = pPers.lastname;
+        item.firstname = pPers.firstname;
         item.personid = pPers.id;
+        item.avatarid = pPers.avatarid;
         item.departementid = this.departementid;
+        if (item.id === null){
+            item.id = item.create_id();
+        }
         var self = this;
         let bOld = (item.rev !== null);
         this.clear_error();

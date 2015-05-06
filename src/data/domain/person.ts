@@ -10,26 +10,27 @@ import {PERSON_KEY,PERSON_PREFIX} from '../../infoconstants';
 var cc = new MyCrypto();
 //
 export class Person extends BaseItem implements IPerson {
-    private _user: string;
-    private _pass: string;
-    private _first: string;
-    private _last: string;
-    private _email: string;
-    private _phone: string;
-    private _roles: string[];
-    private _deps: string[];
-    private _annees: string[];
-    private _semestres: string[];
-    private _matieres: string[];
-    private _unites: string[];
-    private _groupes: string[];
-    public _enseignants: string[];
-    public _etudiants: string[];
-    public _affectations: string[];
-    public _events: string[];
+    private _user: string = null;
+    private _pass: string = null;
+    private _first: string = null;
+    private _last: string = null;
+    private _email: string = null;
+    private _phone: string = null;
+    private _roles: string[] = null;
+    private _deps: string[] = null;
+    private _annees: string[] = null;
+    private _semestres: string[] = null;
+    private _matieres: string[] = null;
+    private _unites: string[] = null;
+    private _groupes: string[] = null;
+    public _enseignants: string[] = null;
+    public _etudiants: string[] = null;
+    public _affectations: string[] = null;
+    public _events: string[] = null;
     //
     constructor(oMap?: any) {
         super(oMap);
+        this._user = null;
         if ((oMap !== undefined) && (oMap !== null)) {
             if ((oMap.enseignantids !== undefined) && (oMap.enseignantids !== null)) {
                 this.enseignantids = oMap.enseignantids;
@@ -97,84 +98,77 @@ export class Person extends BaseItem implements IPerson {
     }// create_id
     //
     public get enseignantids(): string[] {
-        return (this._enseignants !== undefined) ? this._enseignants : null;
+        return this._enseignants;
     }
-    public set enseigantids(s: string[]) {
-        this._enseignants = ((s !== undefined) && (s !== null) && (s.length > 0)) ? s : null;
+    public set enseignantids(s: string[]) {
+        this._enseignants = ((s !== undefined) && (s !== null)) ? s : null;
     }
     public get etudiantids(): string[] {
-        return (this._etudiants !== undefined) ? this._etudiants : null;
+        return this._etudiants;
     }
     public set etudiantids(s: string[]) {
-        this._etudiants = ((s !== undefined) && (s !== null) && (s.length > 0)) ? s : null;
+        this._etudiants = ((s !== undefined) && (s !== null) ) ? s : null;
     }
     public get affectationids(): string[] {
-        return (this._affectations !== undefined) ? this._affectations : null;
+        return this._affectations;
     }
     public set affectationids(s: string[]) {
-        this._affectations = ((s !== undefined) && (s !== null) && (s.length > 0)) ? s : null;
+        this._affectations = ((s !== undefined) && (s !== null) ) ? s : null;
     }
     public get eventids(): string[] {
-        return (this._events !== undefined) ? this._events : null;
+        return this._events;
     }
     public set eventids(s: string[]) {
-        this._events = ((s !== undefined) && (s !== null) && (s.length > 0)) ? s : null;
+        this._events = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get departementids(): string[] {
-        return (this._deps !== undefined) ? this._deps : null;
+        return this._deps;
     }
     public set departementids(s: string[]) {
-        this._deps = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._deps = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get groupeids(): string[] {
-        return (this._groupes !== undefined) ? this._groupes : null;
+        return this._groupes;
     }
     public set groupeids(s: string[]) {
-        this._groupes = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._groupes = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get anneeids(): string[] {
-        return (this._annees !== undefined) ? this._annees : null;
+        return this._annees;
     }
     public set anneeids(s: string[]) {
-        this._annees = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._annees = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get semestreids(): string[] {
-        return (this._semestres !== undefined) ? this._semestres : null;
+        return this._semestres;
     }
     public set semestreids(s: string[]) {
-        this._semestres = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._semestres = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get uniteids(): string[] {
-        return (this._unites !== undefined) ? this._unites : null;
+        return this._unites;
     }
     public set uniteids(s: string[]) {
-        this._unites = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._unites = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get matiereids(): string[] {
-        return (this._matieres !== undefined) ? this._matieres : null;
+        return this._matieres;
     }
     public set matiereids(s: string[]) {
-        this._matieres = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._matieres = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public get roles(): string[] {
-        return (this._roles !== undefined) ? this._roles : null;
+        return (this._roles !== null) ? this._roles : [];
     }
     public set roles(s: string[]) {
-        this._roles = ((s !== undefined) && (s !== null) && (s.length !== undefined) &&
-            (s.length > 0)) ? s : null;
+        this._roles = ((s !== undefined) && (s !== null)) ? s : null;
     }
     //
     public reset_password(): void {
@@ -252,15 +246,18 @@ export class Person extends BaseItem implements IPerson {
     }
     //
     public get fullname(): string {
-        var s = '';
-        if (this.lastname !== null) {
+        let s = null;
+        if (this.lastname !== null){
             s = this.lastname;
         }
-        if (this.firstname != null) {
-            s = s + ' ' + this.firstname;
+        if (this.firstname !== null){
+            if (s !== null){
+                s = s + ' ' + this.firstname;
+            } else {
+                s = this.firstname;
+            }
         }
-        s = s.trim();
-        return (s.length > 0) ? s : null;
+        return s;
     } // fullname
     //
     public get password(): string {
@@ -382,7 +379,7 @@ export class Person extends BaseItem implements IPerson {
         return this.has_role('super');
     }
     public get is_prof(): boolean {
-        return this.has_role('prof') && (this.enseigantids !== null) &&
+        return this.has_role('prof') && (this.enseignantids !== null) &&
             (this.enseignantids.length > 0);
     }
     public get is_etud(): boolean {

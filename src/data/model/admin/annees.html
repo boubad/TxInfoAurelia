@@ -1,5 +1,4 @@
 <template>
-	<section class="au-animate">
 	<h2>${title}</h2>
 	<div class="container" if.bind="isConnected">
 		<div>
@@ -43,7 +42,7 @@
 						<a href="#" click.delegate="lastPage()" show.bind="canNextPage">Fin</a>
 					</li>
 				</ul>
-				<select value.bind="currentItem" size.bind="16">
+				<select value.bind="currentItem" size="16">
 					<option repeat.for="elem of items" model.bind="elem">${elem.text}</option>
 				</select>
 			</div>
@@ -83,5 +82,4 @@
 			</div>
 		</div>
 	</div>
-</section>
 </template>

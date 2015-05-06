@@ -37,11 +37,11 @@ export class Departements extends SigleNameViewModel<Departement> {
         return false;
     }
     public set canAdd(s: boolean) { }
-    public refreshAll(): any {
+    public refreshAll(): Promise<any> {
         let userinfo = this.userInfo;
         let pPers = userinfo.person;
         if (pPers === null) {
-            return true;
+            return Promise.resolve(false);
         }
         if (pPers.is_super) {
             return super.refreshAll();
@@ -63,12 +63,12 @@ export class Departements extends SigleNameViewModel<Departement> {
             return true;
         });
     }// refreshAll
-    public refresh(): any {
+    public refresh(): Promise<any> {
         this._add_mode = false;
         let userinfo = this.userInfo;
         let pPers = userinfo.person;
         if (pPers === null) {
-            return true;
+           return Promise.resolve(false);
         }
         if (pPers.is_super) {
             return super.refresh();

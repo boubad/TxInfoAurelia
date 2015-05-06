@@ -23,11 +23,11 @@ export class AdminRouter extends BaseViewModel {
         return (px !== null) && px.is_admin;
     }// activate
     //
-    configureRouter(config: IRouterConfig, router: Router) {
+    public configureRouter(config: IRouterConfig, router: Router) : any {
         config.map([
-            { route: ['', 'home'], moduleId: '../../../home', nav: true, title: 'Accueil' },
-            { route: 'affetuds', moduleId: NOT_IMPLEMENTED, nav: true, title:'Affectations étudiants' },
-            { route: 'affprofs', moduleId: NOT_IMPLEMENTED, nav: true, title:'Affectations enseignants' },
+            { route: ['', 'home'], moduleId: '../home', nav: true, title: 'Accueil' },
+            { route: 'affetuds', moduleId: './etudaffectations', nav: true, title:'Affectations étudiants' },
+            { route: 'affprofs', moduleId: './profaffectations', nav: true, title:'Affectations enseignants' },
             { route: 'etudiants', moduleId: './etudiants', nav: true, title:'Etudiants' },
             { route: 'semestres', moduleId: './semestres', nav: true, title:'Semestres' },
             { route: 'enseignants', moduleId: './enseignants', nav: true, title:'Enseignants' },

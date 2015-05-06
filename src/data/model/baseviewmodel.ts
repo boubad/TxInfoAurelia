@@ -1,4 +1,8 @@
 //baseviewmodel.ts
+/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
+//
+import {IRouterConfig, Router, Redirect} from 'aurelia-router';
+//
 //
 import {UserInfo} from './userinfo';
 import {IBaseItem, IDataService, IPerson} from '../../infodata.d';
@@ -6,22 +10,23 @@ import {DataService} from '../services/dataservice';
 import {InfoRoot} from '../../inforoot';
 //
 export class BaseViewModel {
+   // public router: Router;
     //
     private _user: UserInfo;
-    public title: string;
-    public errorMessage: string;
-    public infoMessage: string;
-    private _photoUrl: string;
-    private _photoData: Blob;
+    public title: string = null;
+    public errorMessage: string = null;
+    public infoMessage: string = null;
+    private _photoUrl: string = null;
+    private _photoData: Blob = null;
     //
     constructor(userinfo: UserInfo) {
         this._user = userinfo;
-        this.title = null;
-        this.errorMessage = null;
-        this.infoMessage = null;
-        this._photoUrl = null;
-        this._photoData = null;
     }// constructor
+    /*
+    public configureRouter(config: IRouterConfig, router: Router): any {
+        this.router = router;
+    } // configureRouter
+    */
     public get userInfo(): UserInfo {
         if (this._user === null) {
             this._user = new UserInfo(new DataService());
@@ -165,4 +170,14 @@ export class BaseViewModel {
         }// p
         return Promise.all(pp);
     }// retrive_avatars
+    public disconnect(): any {
+        if (InfoRoot.confirm('Voulez-vous vraiment quitter?')) {
+            this.userInfo.person = null;
+            /*
+            if ((this.router !== undefined) && (this.router !== null)) {
+                this.router.navigate('#home', true);
+            }
+            */
+        }
+    }// disconnect
 }// class BaseViewModel

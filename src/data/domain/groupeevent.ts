@@ -7,13 +7,13 @@ import {GROUPEEVENT_TYPE, GROUPEEVENT_PREFIX} from '../../infoconstants';
 //
 export class GroupeEvent extends WorkItem
     implements IGroupeEvent {
-    private _aff: string;
-    public _matiereid: string;
-    public _name: string;
-    public _location: string;
-    public _t1: Date;
-    public _t2: Date;
-    public _coef: number;
+    private _aff: string = null;
+    public _matiereid: string = null;
+    public _name: string = null;
+    public _location: string = null;
+    public _t1: Date = null;
+    public _t2: Date = null;
+    public _coef: number = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -42,47 +42,47 @@ export class GroupeEvent extends WorkItem
         } // oMap
     } // constructor
     public get profaffectationid(): string {
-        return (this._aff !== undefined) ? this._aff : null;
+        return this._aff;
     }
     public set profaffectationid(s: string) {
         this._aff = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get matiereid(): string {
-        return (this._matiereid !== undefined) ? this._matiereid : null;
+        return this._matiereid;
     }
     public set matiereid(s: string) {
         this._matiereid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get name(): string {
-        return (this._name !== undefined) ? this._name : null;
+        return this._name;
     }
     public set name(s: string) {
         this._name = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get location(): string {
-        return (this._location !== undefined) ? this._location : null;
+        return this._location;
     }
     public set location(s: string) {
         this._location = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get startTime(): Date {
-        return (this._t1 !== undefined) ? this._t1 : null;
+        return this._t1;
     }
     public set startTime(d: Date) {
         this._t1 = InfoRoot.check_date(d);
     }
     public get endTime(): Date {
-        return (this._t2 !== undefined) ? this._t2 : null;
+        return this._t2;
     }
     public set endTime(d: Date) {
         this._t2 = InfoRoot.check_date(d);
     }
     public get coefficient(): number {
-        return (this._coef !== undefined) ? this._coef : null;
+        return this._coef;
     }
     public set coefficient(s: number) {
         let d = InfoRoot.check_number(s);

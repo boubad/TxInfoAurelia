@@ -5,7 +5,7 @@ import {SigleNameItem} from './siglenameitem';
 import {InfoRoot} from '../../inforoot';
 //
 export class DepSigleNameItem extends SigleNameItem implements IDepSigleNameItem {
-    private _departementid: string;
+    private _departementid: string = null;
     constructor(oMap?: any) {
         super(oMap);
         if ((oMap !== undefined) && (oMap !== null)) {
@@ -15,7 +15,7 @@ export class DepSigleNameItem extends SigleNameItem implements IDepSigleNameItem
         } // oMap
     } // constructor
     public get departementid(): string {
-        return (this._departementid !== undefined) ? this._departementid : null;
+        return this._departementid;
     }
     public set departementid(s: string) {
         this._departementid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?

@@ -6,9 +6,9 @@ import {InfoRoot} from '../../inforoot';
 //
 export class DepartementPerson extends DepartementChildItem
     implements IDepartementPerson {
-    private _personid: string;
-    private _first: string;
-    private _last: string;
+    private _personid: string = null;
+    private _first: string = null;
+    private _last: string = null;
     constructor(oMap?: any) {
         super(oMap);
         if ((oMap !== undefined) && (oMap !== null)) {
@@ -24,7 +24,7 @@ export class DepartementPerson extends DepartementChildItem
         } // oMap
     } // constructor
     public get personid(): string {
-        return (this._personid !== undefined) ? this._personid : null;
+        return this._personid;
     }
     public set personid(s: string) {
         this._personid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
@@ -32,7 +32,7 @@ export class DepartementPerson extends DepartementChildItem
     }
     //
     public get lastname(): string {
-        return (this._last !== undefined) ? this._last : null;
+        return this._last;
     }
     public set lastname(s: string) {
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
@@ -43,7 +43,7 @@ export class DepartementPerson extends DepartementChildItem
     }
     //
     public get firstname(): string {
-        return (this._first !== undefined) ? this._first : null;
+        return this._first;
     }
     public set firstname(s: string) {
         if ((s !== undefined) && (s !== null) && (s.trim().length > 0)) {
@@ -61,15 +61,18 @@ export class DepartementPerson extends DepartementChildItem
     }
     //
     public get fullname(): string {
-        var s = '';
+        var s = null;
         if (this.lastname !== null) {
             s = this.lastname;
         }
-        if (this.firstname != null) {
-            s = s + ' ' + this.firstname;
+        if (this.firstname !== null){
+            if (s !== null){
+                s = s + ' ' + this.firstname;
+            } else {
+                s = this.firstname;
+            }
         }
-        s = s.trim();
-        return (s.length > 0) ? s : null;
+        return s;
     } // fullname
     public avatardocid(): string {
         return this.personid;
@@ -77,16 +80,10 @@ export class DepartementPerson extends DepartementChildItem
     public create_id(): string {
         let s = this.start_key();
         if ((s !== null) && (this.lastname !== null)) {
-            let s1 = InfoRoot.check_name(this.lastname);
-            if (s1 !== null) {
-                s = s + '-' + s1;
-            }
+            s = s + '-' + this.lastname.trim().toUpperCase();
         }
         if ((s !== null) && (this.firstname !== null)) {
-            let s2 = InfoRoot.check_name(this.firstname);
-            if (s2 !== null) {
-                s = s + '-' + s2;
-            }
+            s = s + '-' + this.firstname.trim().toUpperCase();
         }
         if (s !== null) {
             s = s + '-' + InfoRoot.create_random_id();
@@ -94,9 +91,6 @@ export class DepartementPerson extends DepartementChildItem
         return s;
     } // create_id
     public update_person(pPers: IPerson): void {
-        if ((this.id === null) && this.is_storeable()) {
-            this.id = this.create_id();
-        }
         if ((pPers !== undefined) && (pPers !== null)) {
             this.personid = pPers.id;
             this.firstname = pPers.firstname;
@@ -113,7 +107,8 @@ export class DepartementPerson extends DepartementChildItem
         }// pPers
     }// update_person
     public is_storeable(): boolean {
-        return super.is_storeable() && (this.personid !== null);
+        return super.is_storeable() && (this.personid !== null) &&
+            (this.lastname !== null) && (this.firstname !== null);
     }
     public toString(): string {
         return this.fullname;

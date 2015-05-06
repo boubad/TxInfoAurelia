@@ -7,9 +7,9 @@ import {PROFAFFECTATION_TYPE, PROFAFFECTATION_PREFIX} from '../../infoconstants'
 //
 export class ProfAffectation extends Affectation
     implements IProfAffectation {
-    private _enseignantid: string;
-    private _uniteid: string;
-    private _matiereid: string;
+    private _enseignantid: string = null;
+    private _uniteid: string = null;
+    private _matiereid: string = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -26,21 +26,21 @@ export class ProfAffectation extends Affectation
         } // oMap
     } // constructor
     public get enseignantid(): string {
-        return (this._enseignantid !== undefined) ? this._enseignantid : null;
+        return this._enseignantid;
     }
     public set enseignantid(s: string) {
         this._enseignantid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get uniteid(): string {
-        return (this._uniteid !== undefined) ? this._uniteid : null;
+        return this._uniteid;
     }
     public set uniteid(s: string) {
         this._uniteid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get matiereid(): string {
-        return (this._matiereid !== undefined) ? this._matiereid : null;
+        return this._matiereid;
     }
     public set matiereid(s: string) {
         this._matiereid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
@@ -79,10 +79,7 @@ export class ProfAffectation extends Affectation
             s = s + '-' + this.groupeid;
         }
         if ((s !== null) && (this.genre !== null)) {
-            let ss = InfoRoot.check_name(this.genre);
-            if (ss !== null) {
-                s = s + '-' + this.genre;
-            }
+            s = s + '-' + this.genre.trim().toUpperCase();
         }
         return s;
     }

@@ -129,18 +129,18 @@ export class InfoRoot {
         return pSel;
     }// sync_departements
     public static add_id_to_array(cont: string[], id: string): void {
-        if ((cont !== undefined) && (cont !== null) && (cont.length > 0) &&
-            (id !== undefined) && (id !== null)) {
-            let bFound = false;
-            for (let x of cont) {
-                if (x == id) {
-                    bFound = true;
-                    break;
-                }
+        if ((cont === undefined) || (cont === null) ||
+            (id === undefined) || (id === null)) {
+            return;
+        }
+        let bFound = false;
+        for (let p of cont) {
+            if (p == id) {
+                bFound = true;
             }
-            if (!bFound) {
-                cont.push(id);
-            }
+        }// p
+        if (!bFound) {
+            cont.push(id);
         }
     }// add_id_to_array
     public static string_to_date(s: any): Date {

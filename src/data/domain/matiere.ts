@@ -7,11 +7,11 @@ import {MATIERE_TYPE, MATIERE_PREFIX} from '../../infoconstants';
 //
 export class Matiere extends DepSigleNameItem implements IMatiere {
     //
-    private _uniteid: string;
-    private _genre: string;
-    private _mat_module: string;
-    private _coef: number;
-    private _ecs: number;
+    private _uniteid: string = null;
+    private _genre: string = null;
+    private _mat_module: string = null;
+    private _coef: number = null;
+    private _ecs: number = null;
     //
     constructor(oMap?: any) {
         super(oMap);
@@ -34,21 +34,21 @@ export class Matiere extends DepSigleNameItem implements IMatiere {
         }// oMap
     } // constructor
     public get uniteid(): string {
-        return (this._uniteid !== undefined) ? this._uniteid : null;
+        return this._uniteid;
     }
     public set uniteid(s: string) {
         this._uniteid = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
     public get genre(): string {
-        return (this._genre !== undefined) ? this._genre : null;
+        return this._genre;
     }
     public set genre(s: string) {
         this._genre = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim().toUpperCase() : null;
     }
     public get mat_module(): string {
-        return (this._mat_module !== undefined) ? this._mat_module : null;
+        return this._mat_module;
     }
     public set mat_module(s: string) {
         this._mat_module = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
@@ -68,7 +68,7 @@ export class Matiere extends DepSigleNameItem implements IMatiere {
         return s;
     }
     public get ecs(): number {
-        return (this._ecs !== undefined) ? this._ecs : null;
+        return this._ecs;
     }
     public set ecs(d: number) {
         let v = InfoRoot.check_number(d);
@@ -79,7 +79,7 @@ export class Matiere extends DepSigleNameItem implements IMatiere {
         }
     }
     public get coefficient(): number {
-        return (this._coef !== undefined) ? this._coef : null;
+        return this._coef;
     }
     public set coefficient(d: number) {
         let v = InfoRoot.check_number(d);
