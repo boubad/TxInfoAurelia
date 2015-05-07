@@ -1,7 +1,7 @@
 //enseignants.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 //
 import {UserInfo} from '../userinfo';
 import {PersonViewModel} from './personviewmodel';
@@ -21,6 +21,9 @@ export class Enseignants extends PersonViewModel<Enseignant, Person> {
     protected create_item(): Enseignant {
         let p = new Enseignant({ departementid: this.departementid });
         return p;
+    }
+    protected is_refresh(): boolean {
+        return (this.modelItem.departementid !== null);
     }
 }// class Etudiants
 

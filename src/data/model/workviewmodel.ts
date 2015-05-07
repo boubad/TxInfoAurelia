@@ -1,8 +1,7 @@
 //workviewmodel.ts
 //
-//
 import {UserInfo} from './userinfo';
-import {IDepartement, IAnnee, IUnite,ISemestre, IMatiere, IGroupe} from '../../infodata.d';
+import {IDepartement, IAnnee, IUnite, ISemestre, IMatiere, IGroupe} from '../../infodata.d';
 import {InfoRoot} from '../../inforoot';
 import {BaseViewModel} from './baseviewmodel';
 //

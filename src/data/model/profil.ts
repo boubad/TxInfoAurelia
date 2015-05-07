@@ -1,74 +1,76 @@
 //profil.ts
 //
-/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 //
 //
 import {IDataService, IPerson, IElementDesc, IFileDesc} from '../../infodata.d';
 import {BaseViewModel} from './baseviewmodel';
-import {InfoRoot} from '../../inforoot';
+import {InfoRoot, EMPTY_STRING} from '../../inforoot';
 import {FileDesc} from '../domain/filedesc';
 import {UserInfo} from './userinfo';
 //
+
+//
 export class Profil extends BaseViewModel {
     //
-    private fileDesc: IFileDesc;
+    private fileDesc: IFileDesc = null;
     //
-    public profilMode: boolean;
-    public passwordMode: boolean;
-    public avatarMode: boolean;
-    public newPassword: string;
-    public confirmPassword: string;
+    public profilMode: boolean = true;
+    public passwordMode: boolean = false;
+    public avatarMode: boolean = false;
+    public newPassword: string = null;
+    public confirmPassword: string = null;
     //
-    public firstname: string;
-    public lastname: string;
-    public email: string;
-    public phone: string;
-    public description: string;
+    public firstname: string = null;
+    public lastname: string = null;
+    public email: string = null;
+    public phone: string = null;
+    public description: string = null;
     //
     public static inject() { return [UserInfo]; }
     constructor(userinfo: UserInfo) {
         super(userinfo);
         this.title = 'Profil';
-        this.hasUrl = false;
-        this.profilMode = true;
-        this.passwordMode = false;
-        this.avatarMode = false;
-        this.newPassword = null;
-        this.confirmPassword = null;
-        this.fileDesc = new FileDesc();
-        this.firstname = null;
-        this.lastname = null;
-        this.email = null;
-        this.phone = null;
-        this.description = null;
     }// constructor
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
         return (px !== null) && (px.id !== null);
     }// canActivate
     public activate(params?: any, config?: any, instruction?: any): any {
+        if (this.fileDesc === null) {
+            this.fileDesc = new FileDesc();
+        }
+        this.retrieve_userData();
+        return super.activate(params, config, instruction);
+    }// activate
+    protected retrieve_userData(): any {
         let px = this.userInfo.person;
         this.fileDesc.clear();
-        this.newPassword = null;
-        this.confirmPassword = null;
+        this.newPassword = EMPTY_STRING;
+        this.confirmPassword = EMPTY_STRING;
         if (px !== null) {
-            this.firstname = px.firstname;
-            this.lastname = px.lastname;
-            this.email = px.email;
-            this.phone = px.phone;
-            this.description = px.description;
-        }// px
-        return super.activate(params,config,instruction);
-    }// activate
+            this.firstname = (px.firstname !== null) ? px.firstname : EMPTY_STRING;
+            this.lastname = (px.lastname !== null) ? px.lastname : EMPTY_STRING;
+            this.email = (px.email !== null) ? px.email : EMPTY_STRING;
+            this.phone = (px.phone !== null) ? px.phone : EMPTY_STRING;
+            this.description = (px.description !== null) ? px.description : EMPTY_STRING;
+        } else {
+            this.firstname = EMPTY_STRING;
+            this.lastname = EMPTY_STRING;
+            this.email = EMPTY_STRING;
+            this.phone = EMPTY_STRING;
+            this.description = EMPTY_STRING;
+        }
+    }// retrieve_userData
     public get oldUrl(): string {
         return this.photoUrl;
     }
     public get hasOldUrl(): boolean {
         return this.hasPhoto;
     }
-    public set hasOldUrl(s:boolean){}
+    public set hasOldUrl(s: boolean) { }
     public set_profil(): any {
         this.profilMode = true;
         this.passwordMode = false;
@@ -99,8 +101,8 @@ export class Profil extends BaseViewModel {
         this.clear_error();
         return this.dataService.maintains_item(pPers).then((r) => {
             self.infoMessage = 'Mot de passe modifié!';
-            self.newPassword = null;
-            self.confirmPassword = null;
+            self.newPassword = EMPTY_STRING;
+            self.confirmPassword = EMPTY_STRING;
         }, (err) => {
                 self.set_error(err);
             });
@@ -112,6 +114,9 @@ export class Profil extends BaseViewModel {
     public saveData(): any {
         let pPers = this.userInfo.person;
         if (pPers === null) {
+            return;
+        }
+        if (!this.canSaveData) {
             return;
         }
         pPers.firstname = this.firstname;
@@ -133,7 +138,7 @@ export class Profil extends BaseViewModel {
     public get hasUrl(): boolean {
         return (this.fileDesc.url !== null);
     }
-    public set hasUrl(s:boolean){}
+    public set hasUrl(s: boolean) { }
     public get canRemove(): boolean {
         return this.hasOldUrl;
     }

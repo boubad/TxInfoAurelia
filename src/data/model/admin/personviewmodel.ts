@@ -3,22 +3,23 @@
 //
 import {UserInfo} from '../userinfo';
 import {IPerson, IDepartementPerson, IWorkItem} from '../../../infodata.d';
-import {InfoRoot} from '../../../inforoot';
+import {InfoRoot,EMPTY_STRING} from '../../../inforoot';
 import {BaseEditViewModel} from './baseeditmodel';
 //
 export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     extends BaseEditViewModel<T> {
     //
-    private _current_person: V;
+    private _current_person: V = null;
     //
     constructor(userinfo: UserInfo) {
         super(userinfo);
-        this._current_person = null;
     }// constructor
     //
     public activate(params?: any, config?: any, instruction?: any): any {
         let self = this;
-        this._current_person = this.create_person();
+        if (this._current_person === null) {
+            this._current_person = this.create_person();
+        }
         return super.activate(params, config, instruction).then((r) => {
             return self.refreshAll();
         });
@@ -50,7 +51,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
         });
     }// post_change_item
     public get currentPerson(): V {
-        if ((this._current_person === undefined) || (this._current_person === null)) {
+        if (this._current_person === null) {
             this._current_person = this.create_person();
         }
         return this._current_person;
@@ -64,7 +65,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get username(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.username : null;
+        return (x !== null) ? x.username : EMPTY_STRING;
     }
     public set username(s: string) {
         let x = this.currentPerson;
@@ -74,7 +75,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get firstname(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.firstname : null;
+        return (x !== null) ? x.firstname : EMPTY_STRING;
     }
     public set firstname(s: string) {
         let x = this.currentPerson;
@@ -84,7 +85,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get lastname(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.lastname : null;
+        return (x !== null) ? x.lastname : EMPTY_STRING;
     }
     public set lastname(s: string) {
         let x = this.currentPerson;
@@ -94,7 +95,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get email(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.email : null;
+        return (x !== null) ? x.email : EMPTY_STRING;
     }
     public set email(s: string) {
         let x = this.currentPerson;
@@ -104,7 +105,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get phone(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.phone : null;
+        return (x !== null) ? x.phone : EMPTY_STRING;
     }
     public set phone(s: string) {
         let x = this.currentPerson;
@@ -114,7 +115,7 @@ export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     }
     public get description(): string {
         let x = this.currentPerson;
-        return (x !== null) ? x.description : null;
+        return (x !== null) ? x.description : EMPTY_STRING;
     }
     public set description(s: string) {
         let x = this.currentPerson;

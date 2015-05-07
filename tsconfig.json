@@ -5,10 +5,12 @@
         "declaration": false,
         "noImplicitAny": false,
         "removeComments": true,
-        "noLib": false
+        "noLib": false,
+        "emitDecoratorMetadata": true
     },
     "filesGlob": [
-        "./src/**/*.ts"
+        "./src/**/*.ts",
+        "./typings/**/*.ts"
     ],
     "files": [
         "./src/animation-main.ts",
@@ -53,7 +55,6 @@
         "./src/data/model/admin/etudiants.ts",
         "./src/data/model/admin/groupes.ts",
         "./src/data/model/admin/matieres.ts",
-        "./src/data/model/admin/pagedviewmodel.ts",
         "./src/data/model/admin/personviewmodel.ts",
         "./src/data/model/admin/profaffectations.ts",
         "./src/data/model/admin/semestres.ts",
@@ -69,6 +70,38 @@
         "./src/data/services/pouchdb/pouchdatabase.ts",
         "./src/infoconstants.ts",
         "./src/infodata.d.ts",
-        "./src/inforoot.ts"
+        "./src/inforoot.ts",
+        "./typings/aurelia-amd/aurelia-amd.d.ts",
+        "./typings/aurelia/aurelia-animator-css.d.ts",
+        "./typings/aurelia/aurelia-app-contacts.d.ts",
+        "./typings/aurelia/aurelia-binding.d.ts",
+        "./typings/aurelia/aurelia-bootstrapper.d.ts",
+        "./typings/aurelia/aurelia-dependency-injection.d.ts",
+        "./typings/aurelia/aurelia-event-aggregator.d.ts",
+        "./typings/aurelia/aurelia-framework.d.ts",
+        "./typings/aurelia/aurelia-history-browser.d.ts",
+        "./typings/aurelia/aurelia-history.d.ts",
+        "./typings/aurelia/aurelia-http-client.d.ts",
+        "./typings/aurelia/aurelia-loader-default.d.ts",
+        "./typings/aurelia/aurelia-loader.d.ts",
+        "./typings/aurelia/aurelia-logging-console.d.ts",
+        "./typings/aurelia/aurelia-logging.d.ts",
+        "./typings/aurelia/aurelia-metadata.d.ts",
+        "./typings/aurelia/aurelia-path.d.ts",
+        "./typings/aurelia/aurelia-route-recognizer.d.ts",
+        "./typings/aurelia/aurelia-router.d.ts",
+        "./typings/aurelia/aurelia-skeleton-navigation.d.ts",
+        "./typings/aurelia/aurelia-skeleton-plugin.d.ts",
+        "./typings/aurelia/aurelia-task-queue.d.ts",
+        "./typings/aurelia/aurelia-templating-binding.d.ts",
+        "./typings/aurelia/aurelia-templating-resources.d.ts",
+        "./typings/aurelia/aurelia-templating-router.d.ts",
+        "./typings/aurelia/aurelia-templating.d.ts",
+        "./typings/aurelia/aurelia.d.ts",
+        "./typings/core-js.d.ts",
+        "./typings/core-js/core-js.d.ts",
+        "./typings/nprogress.d.ts",
+        "./typings/pouchdb/pouchdb.d.ts",
+        "./typings/reflect-metadata.d.ts"
     ]
 }

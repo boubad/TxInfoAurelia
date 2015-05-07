@@ -1,43 +1,38 @@
 //home.ts
+/// <reference path='../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
+import {inject} from 'aurelia-dependency-injection';
 //
-import {inject} from 'aurelia-framework';
-//
-//
-import {IDataService, IPerson, IElementDesc} from '../../infodata.d';
+import {IDataService, IPerson} from '../../infodata.d';
 import {BaseViewModel} from './baseviewmodel';
-import {InfoRoot} from '../../inforoot';
+import {InfoRoot, EMPTY_STRING} from '../../inforoot';
 import {UserInfo} from './userinfo';
 //
 export class Home extends BaseViewModel {
-    public username: string;
-    public password: string;
-    public menu: IElementDesc[];
+    public username: string = null;
+    public password: string = null;
     //
-    public static inject(){ return [UserInfo];}
+    public static inject() { return [UserInfo]; }
     //
-    constructor(userinfo:UserInfo) {
+    constructor(userinfo: UserInfo) {
         super(userinfo);
-        this.username = null;
-        this.password = null;
-        this.menu = [];
     }// constructor
     public activate(params?: any, config?: any, instruction?: any): any {
+        this.username = EMPTY_STRING;
+        this.password = EMPTY_STRING;
         if (this.isConnected) {
             this.title = 'Accueil';
-            return super.activate(params,config,instruction);
+            return super.activate(params, config, instruction);
         } else {
-          this.title = 'Connexion';
-          this.menu = [];
-          return this.dataService.check_admin();
+            this.title = 'Connexion';
+            return this.dataService.check_admin();
         }
     }// activate
     public get canConnect(): boolean {
         return (this.username !== null) && (this.username.trim().length > 0) &&
             (this.password !== null) && (this.password.trim().length > 0);
     }// canConnect
-    public get cannotConnect():boolean {
+    public get cannotConnect(): boolean {
         return (!this.canConnect);
     }
     public connect(): any {
@@ -54,8 +49,8 @@ export class Home extends BaseViewModel {
                 if (!pPers.check_password(spass)) {
                     self.errorMessage = 'Utilisateur inconnu';
                 } else {
-                    self.username = null;
-                    self.password = null;
+                    self.username = EMPTY_STRING;
+                    self.password = EMPTY_STRING;
                     self.userInfo.person = pPers;
                 }
             }

@@ -1,8 +1,7 @@
 //etudaffviewmodel.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-//
+import {inject} from 'aurelia-dependency-injection';
 //
 import {UserInfo} from '../userinfo';
 import {AffectationViewModel} from './affectationviewmodel';

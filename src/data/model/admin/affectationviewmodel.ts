@@ -24,6 +24,9 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     protected create_person(): P {
         return null;
     }
+    protected is_refresh(): boolean {
+        return (this.modelItem.semestreid !== null) && (this.modelItem.groupeid !== null);
+    }
     protected is_storeable(): boolean {
         let bRet = (this.departementid !== null) && (this.anneeid !== null) &&
             (this.semestreid !== null) && (this.groupeid !== null) &&
@@ -178,10 +181,8 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
         });
     }// save
     public refreshAll(): Promise<any> {
-        this._data_ids = [];
-        this._pages_count = 0;
-        this._current_page = 0;
-        if ((this.semestreid === null) || (this.groupeid === null)){
+        this.prepare_refresh();
+        if ((this.semestreid === null) || (this.groupeid === null)) {
             return Promise.resolve(false);
         }
         return super.refreshAll();

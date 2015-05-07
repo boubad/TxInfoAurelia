@@ -1,8 +1,7 @@
 //administrators.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-//
+import {inject} from 'aurelia-dependency-injection';
 import {UserInfo} from '../userinfo';
 import {PersonViewModel} from './personviewmodel';
 import {Administrator} from '../../domain/administrator';
@@ -21,6 +20,9 @@ export class Administrators extends PersonViewModel<Administrator, Person> {
     protected create_item(): Administrator {
         let p = new Administrator({ departementid: this.departementid });
         return p;
+    }
+    protected is_refresh():boolean{
+        return (this.modelItem.departementid !== null);
     }
 }// class Administrators
 

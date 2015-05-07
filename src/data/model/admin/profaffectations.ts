@@ -1,8 +1,7 @@
 //profaffviewmodel.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-//
+import {inject} from 'aurelia-dependency-injection';
 //
 import {UserInfo} from '../userinfo';
 //import {IAffectation, IDepartementPerson} from '../../../infodata.d';
@@ -62,6 +61,10 @@ export class Profaffectations extends AffectationViewModel<ProfAffectation, Ense
         this.currentAffectations = [];
         return this.refreshAll();
     }
+    protected is_refresh(): boolean {
+        return super.is_refresh() && (this.modelItem.matiereid !== null) &&
+            (this.modelItem.genre !== null);
+    }
     //
     public get genre(): string {
         return this._genre;
@@ -74,10 +77,9 @@ export class Profaffectations extends AffectationViewModel<ProfAffectation, Ense
     }
     //
      public refreshAll(): Promise<any> {
-        this._data_ids = [];
-        this._pages_count = 0;
-        this._current_page = 0;
-        if ((this.matiereid === null) || (this.genre === null)){
+         this.prepare_refresh();
+        if ((this.semestreid === null) || (this.groupeid === null) ||
+            (this.matiereid === null) || (this.genre === null)){
             return Promise.resolve(false);
         }
         return super.refreshAll();

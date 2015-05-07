@@ -1,7 +1,7 @@
 //matieres.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
+import {inject} from 'aurelia-dependency-injection';
 //
 import {UserInfo} from '../userinfo';
 import {SigleNameViewModel} from './siglenameviewmodel';
@@ -23,6 +23,17 @@ export class Matieres extends SigleNameViewModel<Matiere> {
         });
         return p;
     }
+    protected is_refresh(): boolean {
+        return (this.modelItem.uniteid !== null);
+    }
+     protected post_change_departement(): Promise<any> {
+        let self = this;
+        return super.post_change_departement().then((r) => {
+            self.modelItem.departementid = self.departementid;
+            self.modelItem.uniteid = null;
+            self.refreshAll();
+        });
+    }// post_change_departement
     protected post_change_unite(): Promise<any> {
         let self = this;
         return super.post_change_unite().then((r) => {

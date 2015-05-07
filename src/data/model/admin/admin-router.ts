@@ -1,15 +1,16 @@
 //admin-router.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-router.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-import {IRouterConfig, Router} from 'aurelia-router';
+import {inject} from 'aurelia-dependency-injection';
+import {RouterConfiguration, Router} from 'aurelia-router';
 import {BaseViewModel} from '../baseviewmodel';
 import {UserInfo} from '../userinfo';
 //
 const NOT_IMPLEMENTED = '../not-implemented';
 //
 export class AdminRouter extends BaseViewModel {
-    public router: Router;
+    public router: Router = null;
     public heading: string = 'Administration';
     //
     static inject(){ return [UserInfo];}
@@ -23,7 +24,7 @@ export class AdminRouter extends BaseViewModel {
         return (px !== null) && px.is_admin;
     }// activate
     //
-    public configureRouter(config: IRouterConfig, router: Router) : any {
+    public configureRouter(config: RouterConfiguration, router: Router) : any {
         config.map([
             { route: ['', 'home'], moduleId: '../home', nav: true, title: 'Accueil' },
             { route: 'affetuds', moduleId: './etudaffectations', nav: true, title:'Affectations étudiants' },

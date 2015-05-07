@@ -1,6 +1,5 @@
 //baseeditmodel.ts
 //
-//
 import {UserInfo} from '../userinfo';
 import {IBaseItem, IFileDesc} from '../../../infodata.d';
 import {InfoRoot} from '../../../inforoot';
@@ -9,13 +8,14 @@ import {WorkViewModel} from '../workviewmodel';
 //
 export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     //
-    public items: T[] = [];
+    public _items: T[] = null;
     //
-    protected _add_mode: boolean = false;
-    protected _page_size: number = 0;
-    protected _current_page: number = 0;
-    protected _pages_count: number = 16;
-    protected _data_ids: string[] = [];
+    private _add_mode: boolean = false;
+    private _page_size: number = 0;
+    private _current_page: number = 0;
+    private _pages_count: number = 16;
+    private _data_ids: string[] = null;
+    //
     private _current_item: T = null;
     private _old_item: T = null;
     private _item_model: T = null;
@@ -28,6 +28,13 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         super(userinfo);
     }// constructor
     //
+    public get items(): T[] {
+        return (this._items !== null) ? this._items : [];
+    }
+    public set items(s: T[]) {
+        this._items = ((s !== undefined) && (s !== null)) ? s : null;
+    }
+    //
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
         return (px !== null) && px.is_admin;
@@ -35,18 +42,18 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     //
     public activate(params?: any, config?: any, instruction?: any): any {
         let self = this;
-        if ((this._item_model === undefined) || (this._item_model === null)) {
-            this._item_model = this.create_item();
-        }
-        if ((this._fileDesc === undefined) || (this._fileDesc === null)) {
-            this._fileDesc = new FileDesc();
-        }
         return super.activate(params, config, instruction).then((r) => {
             return self.initialize_data();
         }).then((xx) => {
             self.refreshAll();
         })
     }// activate
+    protected get allIds(): string[] {
+        return (this._data_ids !== null) ? this._data_ids : [];
+    }
+    protected set allIds(s: string[]) {
+        this._data_ids = ((s !== undefined) && (s !== null)) ? s : null;
+    }
     //
     protected create_item(): T {
         return null;
@@ -77,22 +84,21 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     }
     //
     protected get fileDesc(): IFileDesc {
-        if ((this._fileDesc === undefined) || (this._fileDesc === null)) {
+        if (this._fileDesc === null) {
             this._fileDesc = new FileDesc();
         }
         return this._fileDesc;
     }
     public get avatarUrl(): string {
-        return ((this._avatar_file !== undefined) || (this._avatar_file !== null)) ?
+        return (this._avatar_file !== null) ?
             this._avatar_file : null;
     }
     public set avatarUrl(s: string) {
-        let old = ((this._avatar_file !== undefined) || (this._avatar_file !== null)) ?
-            this._avatar_file : null;
+        let old = this._avatar_file;
         if (old !== null) {
             InfoRoot.revokeUrl(old);
+            this._avatar_file = s;
         }
-        this._avatar_file = s;
     }
     public get hasAvatarUrl(): boolean {
         return (this.avatarUrl !== null);
@@ -106,11 +112,17 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         }
         return false;
     }
+    public get cannotRemoveAvatar(): boolean {
+        return (!this.canRemoveAvatar);
+    }
     public get canSaveAvatar(): boolean {
         let x = this.fileDesc;
         let p = this.currentItem;
         return (x !== null) && x.is_storeable && (p !== null) &&
             (p.id !== null) && (p.rev !== null);
+    }
+    public get cannotSaveAvatar(): boolean {
+        return (!this.canSaveAvatar);
     }
     public get workingUrl(): string {
         return this.fileDesc.url;
@@ -189,21 +201,33 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
             self.set_error(err);
         });
     }// saveAvatar
+    protected get oldItem(): T {
+        return this._old_item;
+    }
+    protected set oldItem(s: T) {
+        this._old_item = s;
+    }
+    protected get AddMode(): boolean {
+        return this._add_mode;
+    }
+    protected set addMode(b: boolean) {
+        this._add_mode = b;
+    }
     public get canAdd(): boolean {
-        return (!this._add_mode);
+        return (!this.addMode);
     }
     public set canAdd(s: boolean) { }
     public addNew(): any {
-        this._old_item = this.currentItem;
+        this.oldItem = this.currentItem;
         this.currentItem = this.create_item();
-        this._add_mode = true;
+        this.addMode = true;
     }
     public get canCancel(): boolean {
-        return this._add_mode;
+        return this.addMode;
     }
     public cancel_add(): void {
-        this.currentItem = this._old_item;
-        this._add_mode = false;
+        this.currentItem = this.oldItem;
+        this.addMode = false;
     }
     public cancel(): void {
         this.cancel_add();
@@ -217,31 +241,29 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     }
     //
     public get modelItem(): T {
-        if ((this._item_model === undefined) || (this._item_model === null)) {
+        if (this._item_model === null) {
             this._item_model = this.create_item();
         }
         return this._item_model;
     }
     public get currentItem(): T {
-        if ((this._current_item === undefined) || (this._current_item === null)) {
+        if (this._current_item === null) {
             this._current_item = this.create_item();
         }
         return this._current_item;
     }
     public set currentItem(s: T) {
-        this._current_item = s;
+        this._current_item = (s !== undefined) ? s : null;
         this.fileDesc.clear();
         this.post_change_item();
     }
     public refresh(): Promise<any> {
+        this.addMode = false;
         let model = this.modelItem;
         if (model === null) {
             return Promise.resolve(false);
         }
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
-        if ((this.items === undefined) || (this.items === null)) {
-            this.items = [];
-        }
         if (this.items.length > 0) {
             for (let elem of this.items) {
                 let x = elem.url;
@@ -251,21 +273,21 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
                 }
             }// elem
         }
-        this.items = [];
         this.currentItem = null;
+        this.items = null;
         let startKey = null;
         let endKey = null;
-        let nbItems = this._data_ids.length;
+        let nbItems = this.allIds.length;
         let istart = this._current_page * this._page_size;
         if ((istart >= 0) && (istart < nbItems)) {
-            startKey = this._data_ids[istart];
+            startKey = this.allIds[istart];
         }
         let iend = istart + this._page_size - 1;
         if (iend >= nbItems) {
             iend = nbItems - 1;
         }
         if ((iend >= 0) && (iend < nbItems)) {
-            endKey = this._data_ids[iend];
+            endKey = this.allIds[iend];
         }
         if ((startKey === null) || (endKey === null)) {
             this.addNew();
@@ -273,30 +295,17 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         }
         this.clear_error();
         var self = this;
-        // console.log('REFRESH STARTKEY: ' + startKey + " ENDKEY: " + endKey);
         return this.dataService.get_items(model, startKey, endKey).then((rr) => {
             let rx = ((rr !== undefined) && (rr !== null)) ? rr : [];
-            //    console.log('LENGTH 0: ' + rx.length);
-            self._add_mode = false;
             if (self.hasAvatars) {
                 return self.retrieve_avatars(rx);
             } else {
                 return rx;
             }
         }).then((dd: T[]) => {
-            self.items = ((dd !== undefined) && (dd !== null)) ? dd : [];
-            //  console.log('LENGTH: ' + self.items.length);
+            self.items = dd;
             let pSel = InfoRoot.sync_array(self.items, oldid);
             self.currentItem = pSel;
-            /*
-                if (pSel !== null){
-                let oMap: any = {};
-                pSel.to_map(oMap);
-                console.log('SELECTED: ' + JSON.stringify(oMap));
-                } else {
-                    console.log('SELECTED: NULL');
-                }
-                */
             return true;
         });
     }// refresh
@@ -307,30 +316,33 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         }
         return sRet;
     }
-    public refreshAll(): Promise<any> {
-        this._data_ids = [];
-        this._pages_count = 0;
+    protected prepare_refresh(): void {
+        this.allIds = null;
+        this.pagesCount = 0;
         this._current_page = 0;
         this._current_item = null;
-        let model = this.modelItem;
-        if (model === null) {
-            return Promise.resolve(false);
+        this._items = null;
+    }
+    protected is_refresh():boolean{
+        return true;
+    }
+    public refreshAll(): Promise<any> {
+        this.prepare_refresh();
+        if (!this.is_refresh()){
+            return Promise.resolve(true);
         }
-        this._data_ids = [];
+        let model = this.modelItem;
         let startKey = model.start_key();
         let endKey = model.end_key();
-        let nc = this._page_size;
+        let nc = this.itemsPerPage;
         let self = this;
-        // console.log('REFRESH_ALL STARTKEY: ' + startKey + " ENDKEY: " + endKey);
         return this.dataService.get_ids(startKey, endKey).then((ids) => {
-            if ((ids !== undefined) && (ids !== null)) {
-                self._data_ids = ids;
-                let nt = ids.length;
-                let np = Math.floor(nt / nc);
-                if ((np * nc) < nt) {
-                    ++np;
-                }
-                self._pages_count = np;
+            self.allIds = ids;
+            let nt = self.allIds.length;
+            let np = Math.floor(nt / nc);
+            if ((np * nc) < nt) {
+                ++np;
+                self.pagesCount = np;
             }
             self.update_title();
             return self.refresh();
@@ -352,7 +364,6 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
                 return self.refreshAll();
             }
         }, (err) => {
-                self._add_mode = false;
                 self.set_error(err);
                 return false;
             });
@@ -375,7 +386,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         }
     }// remove
     public get hasItems(): boolean {
-        return (this._data_ids.length > 0);
+        return (this.allIds.length > 0);
     }
     public set hasItems(s: boolean) { }
     public get hasPages(): boolean {
@@ -384,6 +395,9 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     public set hasPages(s: boolean) { }
     public get pagesCount(): number {
         return this._pages_count;
+    }
+    public set pagesCount(s: number) {
+        this._pages_count = ((s !== undefined) && (s !== null) && (s >= 0)) ? s : 0;
     }
     public get itemsPerPage(): number {
         return this._page_size;

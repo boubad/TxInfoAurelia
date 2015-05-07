@@ -1,32 +1,22 @@
 //baseviewmodel.ts
-/// <reference path='../../../typings/aurelia/aurelia.d.ts' />
-//
-import {IRouterConfig, Router, Redirect} from 'aurelia-router';
-//
 //
 import {UserInfo} from './userinfo';
 import {IBaseItem, IDataService, IPerson} from '../../infodata.d';
 import {DataService} from '../services/dataservice';
-import {InfoRoot} from '../../inforoot';
+import {InfoRoot, EMPTY_STRING} from '../../inforoot';
 //
 export class BaseViewModel {
-   // public router: Router;
     //
-    private _user: UserInfo;
-    public title: string = null;
-    public errorMessage: string = null;
-    public infoMessage: string = null;
+    private _user: UserInfo = null;
+    public title: string = EMPTY_STRING;
+    public errorMessage: string = EMPTY_STRING;
+    public infoMessage: string = EMPTY_STRING;
     private _photoUrl: string = null;
     private _photoData: Blob = null;
     //
     constructor(userinfo: UserInfo) {
-        this._user = userinfo;
+        this._user = (userinfo !== undefined) ? userinfo : null;
     }// constructor
-    /*
-    public configureRouter(config: IRouterConfig, router: Router): any {
-        this.router = router;
-    } // configureRouter
-    */
     public get userInfo(): UserInfo {
         if (this._user === null) {
             this._user = new UserInfo(new DataService());
@@ -85,8 +75,8 @@ export class BaseViewModel {
     public set hasInfoMessage(b: boolean) {
     }
     public clear_error(): void {
-        this.errorMessage = null;
-        this.hasInfoMessage = null;
+        this.errorMessage = EMPTY_STRING;
+        this.infoMessage = EMPTY_STRING;
     }
     public set_error(err: any): void {
         if ((err !== undefined) && (err !== null)) {
@@ -105,7 +95,7 @@ export class BaseViewModel {
     } // set_error
     public get fullname(): string {
         let x = this.person;
-        return (x !== null) ? x.fullname : null;
+        return (x !== null) ? x.fullname : EMPTY_STRING;
     }
     public get photoUrl(): string {
         if ((this._photoUrl === null) && (this._photoData !== null)) {
@@ -173,11 +163,6 @@ export class BaseViewModel {
     public disconnect(): any {
         if (InfoRoot.confirm('Voulez-vous vraiment quitter?')) {
             this.userInfo.person = null;
-            /*
-            if ((this.router !== undefined) && (this.router !== null)) {
-                this.router.navigate('#home', true);
-            }
-            */
         }
     }// disconnect
 }// class BaseViewModel

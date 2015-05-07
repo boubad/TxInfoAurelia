@@ -1,8 +1,7 @@
 //semestres.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-//
+import {inject} from 'aurelia-dependency-injection';
 import {UserInfo} from '../userinfo';
 import {IntervalViewModel} from './depintervalmodel';
 import {Semestre} from '../../domain/semestre';
@@ -28,6 +27,9 @@ export class Semestres extends IntervalViewModel<Semestre> {
             anneeid: this.anneeid
         });
         return p;
+    }
+    protected is_refresh(): boolean {
+        return (this.modelItem.anneeid !== null);
     }
      protected post_change_annee(): Promise<any> {
         let self = this;

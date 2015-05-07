@@ -6,13 +6,14 @@ declare var window: any;
 //
 const LOWERBOUNDUPPER = 'A'.charCodeAt(0);
 const UPPERBOUNDUPPER = 'Z'.charCodeAt(0);
-const HAS_WINDOW = (window !== undefined) && (window !== null);
-const HAS_WINDOW_URL = (window !== undefined) && (window !== null)
+const HAS_WINDOW:boolean = (window !== undefined) && (window !== null);
+const HAS_WINDOW_URL:boolean = (window !== undefined) && (window !== null)
     && (window.URL !== undefined) && (window.URL !== null);
-const HAS_SESSION_STORE = (window !== undefined) && (window.sessionStorage !== undefined) &&
+const HAS_SESSION_STORE:boolean = (window !== undefined) && (window.sessionStorage !== undefined) &&
     (window.sessionStorage !== null);
-const HAS_LOCAL_STORE = (window !== undefined) && (window !== null)
+const HAS_LOCAL_STORE:boolean = (window !== undefined) && (window !== null)
     && (window.localStorage !== undefined) && (window.localStorage !== null);
+export const EMPTY_STRING: string = '';     
 //
 export class InfoRoot {
     //

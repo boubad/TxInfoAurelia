@@ -1,8 +1,7 @@
 //departements.ts
-/// <reference path='../../../../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../../../../typings/aurelia/aurelia-dependency-injection.d.ts' />
 //
-import {inject} from 'aurelia-framework';
-//
+import {inject} from 'aurelia-dependency-injection';
 import {IDepartement} from '../../../infodata.d';
 import {UserInfo} from '../userinfo';
 import {SigleNameViewModel} from './siglenameviewmodel';
@@ -32,7 +31,7 @@ export class Departements extends SigleNameViewModel<Departement> {
             return false;
         }
         if (pPers.is_super) {
-            return (!this._add_mode);
+            return (!this.addMode);
         }
         return false;
     }
@@ -46,25 +45,22 @@ export class Departements extends SigleNameViewModel<Departement> {
         if (pPers.is_super) {
             return super.refreshAll();
         }
-        this._data_ids = [];
-        this._pages_count = 0;
-        this._current_page = 0;
+        this.prepare_refresh();
         let self = this;
         userinfo.departements.then((dd) => {
             let ii: string[] = [];
             if ((dd !== undefined) && (dd !== null) && (dd.length > 0)) {
-                self._page_size = dd.length;
                 for (let x of dd) {
                     ii.push(x.id);
                 }// x
             }// dd
-            self._data_ids = ii;
-            self._pages_count = (ii.length > 0) ? 1 : 0;
+            self.allIds = ii;
+            self.pagesCount = (ii.length > 0) ? 1 : 0;
             return true;
         });
     }// refreshAll
     public refresh(): Promise<any> {
-        this._add_mode = false;
+        this.addMode = false;
         let userinfo = this.userInfo;
         let pPers = userinfo.person;
         if (pPers === null) {
@@ -73,12 +69,21 @@ export class Departements extends SigleNameViewModel<Departement> {
         if (pPers.is_super) {
             return super.refresh();
         }
+        if (this.items.length > 0) {
+            for (let elem of this.items) {
+                let x = elem.url;
+                if (x !== null) {
+                    InfoRoot.revokeUrl(x);
+                    elem.url = null;
+                }
+            }// elem
+        }
         let self = this;
         this.items = [];
         this.currentItem = null;
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
         userinfo.departements.then((dd: Departement[]) => {
-            self.items = ((dd !== undefined) && (dd !== null)) ? dd : [];
+            self.items = dd;
             let pSel = InfoRoot.sync_array(self.items, oldid);
             self.currentItem = pSel;
             return true;
