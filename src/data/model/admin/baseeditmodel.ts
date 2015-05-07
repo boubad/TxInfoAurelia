@@ -2,70 +2,30 @@
 //
 //
 import {UserInfo} from '../userinfo';
-import {IBaseItem, IFileDesc, IDepartement, IAnnee, IUnite,
-ISemestre, IMatiere, IGroupe} from '../../../infodata.d';
+import {IBaseItem, IFileDesc} from '../../../infodata.d';
 import {InfoRoot} from '../../../inforoot';
 import {FileDesc} from '../../domain/filedesc';
-import {BaseViewModel} from '../baseviewmodel';
+import {WorkViewModel} from '../workviewmodel';
 //
-export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
+export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     //
-    public items: T[];
+    public items: T[] = [];
     //
-    protected _add_mode: boolean;
-    protected _page_size: number;
-    protected _current_page: number;
-    protected _pages_count: number;
-    protected _data_ids: string[];
-    private _current_item: T;
-    private _old_item: T;
-    private _item_model: T;
-    protected  hasAvatars: boolean;
-    private _pageStatus: string;
-    private _fileDesc: IFileDesc;
-    private _avatar_file: string;
-    //
-    private _departements: IDepartement[];
-    private _departement: IDepartement;
-    private _annees: IAnnee[];
-    private _annee: IAnnee;
-    private _unites: IUnite[];
-    private _unite: IUnite;
-    private _semestres: ISemestre[];
-    private _semestre: ISemestre;
-    private _matieres: IMatiere[];
-    private _matiere: IMatiere;
-    private _groupes: IGroupe[];
-    private _groupe: IGroupe;
+    protected _add_mode: boolean = false;
+    protected _page_size: number = 0;
+    protected _current_page: number = 0;
+    protected _pages_count: number = 16;
+    protected _data_ids: string[] = [];
+    private _current_item: T = null;
+    private _old_item: T = null;
+    private _item_model: T = null;
+    protected  hasAvatars: boolean = false;
+    private _pageStatus: string = null;
+    private _fileDesc: IFileDesc = null;
+    private _avatar_file: string = null;
     //
     constructor(userinfo: UserInfo) {
         super(userinfo);
-        this._item_model = null;
-        this._add_mode = false;
-        this._page_size = 16;
-        this._current_page = 0;
-        this._pages_count = 0;
-        this._data_ids = [];
-        this._old_item = null;
-        this._current_item = null;
-        this.items = [];
-        this.hasAvatars = false;
-        this._pageStatus = null;
-        this._old_item = null;
-        this._fileDesc = null;
-        //
-        this._departements = null;
-        this._departement = null;
-        this._unites = null;
-        this._unite = null;
-        this._matieres = null;
-        this._matiere = null;
-        this._annees = null;
-        this._annee = null;
-        this._semestres = null;
-        this._semestre = null;
-        this._groupes = null;
-        this._groupe = null;
     }// constructor
     //
     public canActivate(params?: any, config?: any, instruction?: any): any {
@@ -78,6 +38,9 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         if ((this._item_model === undefined) || (this._item_model === null)) {
             this._item_model = this.create_item();
         }
+        if ((this._fileDesc === undefined) || (this._fileDesc === null)) {
+            this._fileDesc = new FileDesc();
+        }
         return super.activate(params, config, instruction).then((r) => {
             return self.initialize_data();
         }).then((xx) => {
@@ -85,168 +48,8 @@ export class BaseEditViewModel<T extends IBaseItem> extends BaseViewModel {
         })
     }// activate
     //
-    protected initialize_data(): Promise<any> {
-        let self = this;
-        let userinfo = this.userInfo;
-        return userinfo.departements.then((dd) => {
-            self._departements = ((dd !== undefined) && (dd !== null)) ? dd : [];
-            let id = self.userInfo.departementid;
-            let p = InfoRoot.sync_array(self.departements, id);
-            self.departement = p;
-            return true;
-        });
-    }// initialize_data
     protected create_item(): T {
         return null;
-    }
-    protected post_change_departement(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    protected post_change_unite(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    protected post_change_annee(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    protected post_change_groupe(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    protected post_change_semestre(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    protected post_change_matiere(): Promise<any> {
-        return Promise.resolve(true);
-    }
-    //
-    public get departements(): IDepartement[] {
-        return (this._departements !== null) ? this._departements : [];
-    }
-    public get departement(): IDepartement {
-        return this._departement;
-    }
-    public set departement(s: IDepartement) {
-        this._departement = (s !== undefined) ? s : null;
-        let id = (this.departement !== null) ? this.departement.id : null;
-        this.userInfo.departementid = id;
-        this._unites = null;
-        this._unite = null;
-        this._groupes = null;
-        this._groupe = null;
-        this._annees = null;
-        this._annee = null;
-        this._semestres = null;
-        this._semestre = null;
-        this._matieres = null;
-        this._matiere = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        userinfo.annees.then((aa) => {
-            self._annees = ((aa !== undefined) && (aa !== null)) ? aa : [];
-            return userinfo.unites;
-        }).then((uu) => {
-            self._unites = ((uu !== undefined) && (uu !== null)) ? uu : [];
-            return userinfo.groupes;
-        }).then((gg) => {
-            self._groupes = ((gg !== undefined) && (gg !== null)) ? gg : [];
-            return self.post_change_departement();
-        });
-    }
-    public get departementid(): string {
-        return (this.departement !== null) ? this.departement.id : null;
-    }
-    //
-    public get annees(): IAnnee[] {
-        return (this._annees !== null) ? this._annees : [];
-    }
-    public get annee(): IAnnee {
-        return this._annee;
-    }
-    public set annee(s: IAnnee) {
-        this._annee = (s !== undefined) ? s : null;
-        let id = (this.annee !== null) ? this.annee.id : null;
-        this.userInfo.anneeid = id;
-        this._semestres = null;
-        this._semestre = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        userinfo.semestres.then((mm) => {
-            self._semestres = ((mm !== undefined) && (mm !== null)) ? mm : [];
-            return self.post_change_annee();
-        });
-    }
-    public get anneeid(): string {
-        return (this.annee !== null) ? this.annee.id : null;
-    }
-    //
-    public get unites(): IUnite[] {
-        return (this._unites !== null) ? this._unites : [];
-    }
-    public get unite(): IUnite {
-        return this._unite;
-    }
-    public set unite(s: IUnite) {
-        this._unite = (s !== undefined) ? s : null;
-        let id = (this.unite !== null) ? this.unite.id : null;
-        this.userInfo.uniteid = id;
-        this._matieres = null;
-        this._matiere = null;
-        let self = this;
-        let userinfo = this.userInfo;
-        userinfo.matieres.then((mm) => {
-            self._matieres = ((mm !== undefined) && (mm !== null)) ? mm : [];
-            return self.post_change_unite();
-        });
-    }
-    public get uniteid(): string {
-        return (this.unite !== null) ? this.unite.id : null;
-    }
-    //
-    public get semestres(): ISemestre[] {
-        return (this._semestres !== null) ? this._semestres : [];
-    }
-    public get semestre(): ISemestre {
-        return this._semestre;
-    }
-    public set semestre(s: ISemestre) {
-        this._semestre = (s !== undefined) ? s : null;
-        let id = (this.semestre !== null) ? this.semestre.id : null;
-        this.userInfo.semestreid = id;
-        this.post_change_semestre();
-    }
-    public get semestreid(): string {
-        return (this.semestre !== null) ? this.semestre.id : null;
-    }
-    //
-    public get groupes(): IGroupe[] {
-        return (this._groupes !== null) ? this._groupes : [];
-    }
-    public get groupe(): IGroupe {
-        return this._groupe;
-    }
-    public set groupe(s: IGroupe) {
-        this._groupe = (s !== undefined) ? s : null;
-        let id = (this.groupe !== null) ? this.groupe.id : null;
-        this.userInfo.groupeid = id;
-        this.post_change_groupe();
-    }
-    public get groupeid(): string {
-        return (this.groupe !== null) ? this.groupe.id : null;
-    }
-    //
-    public get matieres(): IMatiere[] {
-        return (this._matieres !== null) ? this._matieres : [];
-    }
-    public get matiere(): IMatiere {
-        return this._matiere;
-    }
-    public set matiere(s: IMatiere) {
-        this._matiere = (s !== undefined) ? s : null;
-        let id = (this.matiere !== null) ? this.matiere.id : null;
-        this.userInfo.matiereid = id;
-        this.post_change_matiere();
-    }
-    public get matiereid(): string {
-        return (this.matiere !== null) ? this.matiere.id : null;
     }
     //
     protected post_change_item(): Promise<any> {

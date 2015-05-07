@@ -64,6 +64,7 @@
         "./src/data/model/not-implemented.ts",
         "./src/data/model/profil.ts",
         "./src/data/model/userinfo.ts",
+        "./src/data/model/workviewmodel.ts",
         "./src/data/services/dataservice.ts",
         "./src/data/services/pouchdb/pouchdatabase.ts",
         "./src/infoconstants.ts",
