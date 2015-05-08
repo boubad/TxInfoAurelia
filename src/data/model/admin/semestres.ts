@@ -15,10 +15,10 @@ export class Semestres extends IntervalViewModel<Semestre> {
         super(userinfo);
         this.title = 'Semestres';
     }// constructor
-    public get minDate(): string {
+    public get minAnneeDate(): string {
         return (this.annee !== null) ? InfoRoot.date_to_string(this.annee.startDate) : null;
     }
-    public get maxDate(): string {
+    public get maxAnneeDate(): string {
         return (this.annee !== null) ? InfoRoot.date_to_string(this.annee.endDate) : null;
     }
     protected create_item(): Semestre {

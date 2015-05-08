@@ -3,7 +3,7 @@
 //
 import {UserInfo} from '../userinfo';
 import {ISigleNameItem} from '../../../infodata.d';
-import {BaseEditViewModel} from './baseeditmodel';
+import {BaseEditViewModel} from '../baseeditmodel';
 //
 export class SigleNameViewModel<T extends ISigleNameItem> extends BaseEditViewModel<T> {
     //

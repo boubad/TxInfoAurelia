@@ -19,16 +19,30 @@ export class WorkViewModel extends BaseViewModel {
     private _matiere: IMatiere = null;
     private _groupes: IGroupe[] = null;
     private _groupe: IGroupe = null;
+    protected _minDate: Date = null;
+    protected _maxDate: Date = null;
     //
     constructor(userinfo: UserInfo) {
         super(userinfo);
     }// constructor
     //
+    public get semestreMinDate():Date {
+        return this._minDate;
+    }
+    public get semestreMaxDate():Date {
+        return this._maxDate;
+    }
+    public get minDate(): string {
+        return InfoRoot.date_to_string(this._minDate);
+    }
+    public get maxDate(): string {
+        return InfoRoot.date_to_string(this._maxDate);
+    }
+    //
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
         return (px !== null) && (px.id !== null);
     }// activate
-    //
     public activate(params?: any, config?: any, instruction?: any): any {
         let self = this;
         return super.activate(params, config, instruction).then((r) => {
@@ -159,6 +173,13 @@ export class WorkViewModel extends BaseViewModel {
         this._semestre = (s !== undefined) ? s : null;
         let id = (this.semestre !== null) ? this.semestre.id : null;
         this.userInfo.semestreid = id;
+        this._minDate = null;
+        this._maxDate = null;
+        let sem = this.semestre;
+        if (sem !== null) {
+            this._minDate = sem.startDate;
+            this._maxDate = sem.endDate;
+        }
         this.post_change_semestre();
     }
     public get semestreid(): string {

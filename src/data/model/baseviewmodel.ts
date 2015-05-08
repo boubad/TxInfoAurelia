@@ -117,6 +117,10 @@ export class BaseViewModel {
             this.errorMessage = 'Erreur inconnue...';
         }
     } // set_error
+    public get personid():string {
+        let x = this.person;
+        return (x !== null) ? x.id : null;
+    }
     public get fullname(): string {
         let x = this.person;
         return (x !== null) ? x.fullname : EMPTY_STRING;

@@ -95,6 +95,10 @@ export class ElementDesc implements IElementDesc {
         this._url = ((s !== undefined) && (s !== null) && (s.trim().length > 0)) ?
             s.trim() : null;
     }
+    public get has_url():boolean {
+        return (this.url !== null);
+    }
+    public set has_url(b:boolean){}
     public get description(): string {
         return this._description;
     }

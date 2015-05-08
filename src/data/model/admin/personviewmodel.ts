@@ -4,7 +4,7 @@
 import {UserInfo} from '../userinfo';
 import {IPerson, IDepartementPerson, IWorkItem} from '../../../infodata.d';
 import {InfoRoot,EMPTY_STRING} from '../../../inforoot';
-import {BaseEditViewModel} from './baseeditmodel';
+import {BaseEditViewModel} from '../baseeditmodel';
 //
 export class PersonViewModel<T extends IDepartementPerson, V extends IPerson>
     extends BaseEditViewModel<T> {

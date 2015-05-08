@@ -4,7 +4,7 @@
 import {UserInfo} from '../userinfo';
 import {IAffectation, IDepartementPerson} from '../../../infodata.d';
 import {InfoRoot} from '../../../inforoot';
-import {BaseEditViewModel} from './baseeditmodel';
+import {BaseEditViewModel} from '../baseeditmodel';
 //
 export class AffectationViewModel<T extends IAffectation, P extends IDepartementPerson> extends BaseEditViewModel<T> {
     //
@@ -12,8 +12,6 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     public currentPersons: P[] = [];
     public currentAffectations: T[] = [];
     private _person_model: P = null;
-    protected _minDate: Date = null;
-    protected _maxDate: Date = null;
     protected _start: Date = null;
     protected _end: Date = null;
     //
@@ -96,14 +94,10 @@ export class AffectationViewModel<T extends IAffectation, P extends IDepartement
     protected post_change_semestre(): Promise<any> {
         this.modelItem.semestreid = this.semestreid;
         this.currentAffectations = [];
-        this._minDate = null;
-        this._maxDate = null;
         this._start = null;
         this._end = null;
         let sem = this.semestre;
         if (sem !== null) {
-            this._minDate = sem.startDate;
-            this._maxDate = sem.endDate;
             this._start = sem.startDate;
             this._end = sem.endDate;
         }

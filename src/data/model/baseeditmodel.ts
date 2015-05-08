@@ -1,10 +1,10 @@
 //baseeditmodel.ts
 //
-import {UserInfo} from '../userinfo';
-import {IBaseItem, IFileDesc} from '../../../infodata.d';
-import {InfoRoot} from '../../../inforoot';
-import {FileDesc} from '../../domain/filedesc';
-import {WorkViewModel} from '../workviewmodel';
+import {UserInfo} from './userinfo';
+import {IBaseItem, IFileDesc} from '../../infodata.d';
+import {InfoRoot} from '../../inforoot';
+import {FileDesc} from '../domain/filedesc';
+import {WorkViewModel} from './workviewmodel';
 //
 export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     //
@@ -40,7 +40,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     //
     public canActivate(params?: any, config?: any, instruction?: any): any {
         let px = this.userInfo.person;
-        return (px !== null) && px.is_admin;
+        return (px !== null) && (px.is_admin || px.is_prof);
     }// activate
     //
     public activate(params?: any, config?: any, instruction?: any): any {
