@@ -11,7 +11,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     public _items: T[] = null;
     //
     private _add_mode: boolean = false;
-    private _page_size: number = 0;
+    private _page_size: number = 16;
     private _current_page: number = 0;
     private _pages_count: number = 16;
     private _data_ids: string[] = null;
@@ -29,10 +29,13 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
     }// constructor
     //
     public get items(): T[] {
-        return (this._items !== null) ? this._items : [];
+        if (this._items === null) {
+            this._items = [];
+        }
+        return this._items;
     }
     public set items(s: T[]) {
-        this._items = ((s !== undefined) && (s !== null)) ? s : null;
+        this._items = ((s !== undefined) && (s !== null)) ? s : [];
     }
     //
     public canActivate(params?: any, config?: any, instruction?: any): any {
@@ -49,10 +52,13 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         })
     }// activate
     protected get allIds(): string[] {
-        return (this._data_ids !== null) ? this._data_ids : [];
+        if (this._data_ids === null) {
+            this._data_ids = [];
+        }
+        return this._data_ids;
     }
     protected set allIds(s: string[]) {
-        this._data_ids = ((s !== undefined) && (s !== null)) ? s : null;
+        this._data_ids = ((s !== undefined) && (s !== null)) ? s : [];
     }
     //
     protected create_item(): T {
@@ -253,7 +259,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         return this._current_item;
     }
     public set currentItem(s: T) {
-        this._current_item = (s !== undefined) ? s : null;
+        this._current_item = (s !== undefined) ? s : this.create_item();
         this.fileDesc.clear();
         this.post_change_item();
     }
@@ -261,6 +267,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         this.addMode = false;
         let model = this.modelItem;
         if (model === null) {
+            this.warn('modelItem is NULL');
             return Promise.resolve(false);
         }
         let oldid = (this.currentItem !== null) ? this.currentItem.id : null;
@@ -290,6 +297,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
             endKey = this.allIds[iend];
         }
         if ((startKey === null) || (endKey === null)) {
+           this.warn('REFRESH - null start or end keys');
             this.addNew();
             return Promise.resolve(true);
         }
@@ -317,18 +325,18 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         return sRet;
     }
     protected prepare_refresh(): void {
-        this.allIds = null;
-        this.pagesCount = 0;
+        this._data_ids = [];
+        this._pages_count = 0;
         this._current_page = 0;
-        this._current_item = null;
-        this._items = null;
+        this._current_item = this.create_item();
+        this._items = [];
     }
-    protected is_refresh():boolean{
+    protected is_refresh(): boolean {
         return true;
     }
     public refreshAll(): Promise<any> {
         this.prepare_refresh();
-        if (!this.is_refresh()){
+        if (!this.is_refresh()) {
             return Promise.resolve(true);
         }
         let model = this.modelItem;
@@ -386,7 +394,7 @@ export class BaseEditViewModel<T extends IBaseItem> extends WorkViewModel {
         }
     }// remove
     public get hasItems(): boolean {
-        return (this.allIds.length > 0);
+        return ((this._data_ids !== null) && (this._data_ids.length > 0));
     }
     public set hasItems(s: boolean) { }
     public get hasPages(): boolean {

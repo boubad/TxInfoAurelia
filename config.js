@@ -23,6 +23,7 @@ System.config({
     "aurelia-framework": "github:aurelia/framework@0.11.0",
     "aurelia-http-client": "github:aurelia/http-client@0.8.0",
     "aurelia-router": "github:aurelia/router@0.8.0",
+     "aurelia-logging": "github:aurelia/logging@0.4.0",
     "babel": "npm:babel-core@5.1.13",
     "babel-runtime": "npm:babel-runtime@5.1.13",
     "bluebird": "npm:bluebird@2.9.25",

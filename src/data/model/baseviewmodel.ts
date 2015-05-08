@@ -1,11 +1,15 @@
 //baseviewmodel.ts
+/// <reference path='../../../typings/aurelia/aurelia-logging.d.ts' />
 //
+import {getLogger, Logger} from 'aurelia-logging';
 import {UserInfo} from './userinfo';
 import {IBaseItem, IDataService, IPerson} from '../../infodata.d';
 import {DataService} from '../services/dataservice';
 import {InfoRoot, EMPTY_STRING} from '../../inforoot';
 //
 export class BaseViewModel {
+    //
+    private logger: Logger = getLogger('InfoApp');
     //
     private _user: UserInfo = null;
     public title: string = EMPTY_STRING;
@@ -17,6 +21,26 @@ export class BaseViewModel {
     constructor(userinfo: UserInfo) {
         this._user = (userinfo !== undefined) ? userinfo : null;
     }// constructor
+    //
+    protected debug(s: string): void {
+        if ((this.logger !== undefined) && (this.logger !== null) &&
+            (s !== undefined) && (s !== null) && (s.trim().length > 0)) {
+            this.logger.debug(s);
+        }
+    }// debug
+    protected warn(s: string): void {
+        if ((this.logger !== undefined) && (this.logger !== null) &&
+            (s !== undefined) && (s !== null) && (s.trim().length > 0)) {
+            this.logger.warn(s);
+        }
+    }// debug
+    protected info(s: string): void {
+        if ((this.logger !== undefined) && (this.logger !== null) &&
+            (s !== undefined) && (s !== null) && (s.trim().length > 0)) {
+            this.logger.info(s);
+        }
+    }// debug
+    //
     public get userInfo(): UserInfo {
         if (this._user === null) {
             this._user = new UserInfo(new DataService());
