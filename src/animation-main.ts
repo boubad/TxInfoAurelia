@@ -1,5 +1,5 @@
 //animation-main.ts
-/// <reference path='../typings/aurelia/aurelia.d.ts' />
+/// <reference path='../typings/aurelia/aurelia-framework.d.ts' />
 import {Aurelia} from 'aurelia-framework';
 //
 export function configure(aurelia:Aurelia) {
